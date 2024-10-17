@@ -8,10 +8,20 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="blog-section-title">
-                    <h2>Articles</h2>
-                    <p>View the latest news on Blogger</p>
+                    <h2>POSTS</h2>
+                    <p>ALL THE RECENTS POSTS ON TALKARIA</p>
                 </div>
-                <div class="blog-posts">
+                <!-- Sélecteur de catégories -->
+                <div class="category-filter">
+                    <label for="categorySelect">Filter by category:</label>
+                    <select id="categorySelect">
+                        <option class="change" value="">All Categories</option>
+                        {% for category in categories %}
+                            <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="blog-posts" id="blogPosts">
                     {% for post in posts %}
                         {% include 'adds/modele_post.html.twig' %}
                     {% else %}
@@ -41,20 +51,27 @@
                     <div class="latest-widget-title">
                         <h2>Trending Post</h2>
                     </div>
-                    <div class="latest-widget">
-                        <div class="latest-widget-thum">
-                            <a href="single-blog.html">
-                                <img src="images/blog/blog-thum-8.png" alt="blog-thum" /></a>
-                            <div class="icon">
-                                <a href="single-blog.html">
-                                    <img src="images/blog/icon.svg" alt="icon" /></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Ajoutez plus de widgets ici si nécessaire -->
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#categorySelect').on('change', function () {
+            var selectedCategory = $(this).val(); // C'est une variable JavaScript, pas Twig
+            $('#blogPosts .blog-post').each(function () {
+                var postCategory = $(this).find('.blog-post-tag a').text();
+                if (selectedCategory === '' || postCategory === selectedCategory) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock %}
