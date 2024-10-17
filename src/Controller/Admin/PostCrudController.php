@@ -28,7 +28,7 @@ class PostCrudController extends AbstractCrudController
             DateTimeField::new('updatedAt')->setDisabled(),
             TextField::new('category'),
             AssociationField::new('comments'),
-            AssociationField::new('author'),
+            AssociationField::new('users'),
             TextField::new('link'),
         ];
     }
