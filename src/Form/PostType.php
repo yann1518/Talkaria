@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class PostType extends AbstractType
 {
@@ -15,11 +16,14 @@ class PostType extends AbstractType
     {
         $builder
             ->add('title', TextType::class)
-            ->add('content', TextareaType::class)
+            ->add('content', TextType::class)
             ->add('category', TextType::class)
             ->add('link', TextType::class)
-            // Autres champs selon tes besoins
-        ;
+            ->add('imageFile', FileType::class, [
+                'label' => 'Image (JPG, PNG)',
+                'mapped' => true, 
+                'required' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

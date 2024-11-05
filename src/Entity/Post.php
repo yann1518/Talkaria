@@ -29,7 +29,9 @@ class Post
 
     #[ORM\Column(length: 255)]
     private ?string $category = null;
-
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imagePath = null;
     /**
      * @var Collection<int, Comments>
      */
@@ -49,6 +51,16 @@ class Post
         $this->updatedAt = new \DateTimeImmutable();
     }
 
+    public function getImagePath(): ?string
+    {
+        return $this->imagePath;
+    }
+
+    public function setImagePath(?string $imagePath): static
+    {
+        $this->imagePath = $imagePath;
+        return $this;
+    }
 
     public function getId(): ?int
     {
