@@ -13,7 +13,13 @@
         </div>
         <div class="blog-post-meta">
             <ul>
-                <li>By <a href="about.html">{{ post.users.username }}</a></li> <!-- Display the username -->
+                <li>By <a href="about.html">
+                        {% if post.users is not empty %}
+                            {{ post.users.username }}
+                        {% else %}
+                            {{ 'unknown' }}
+                        {% endif %}
+                    </a></li> <!-- Display the username -->
                 <li>
                     <i class="fa fa-clock-o"></i>
                     {{ post.createdAt|date('F j, Y') }} - 2 min <!-- Display the date -->

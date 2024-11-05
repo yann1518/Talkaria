@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('monBlog/assets/css/style.css') }}">
+        {% block stylesheets %}
+        {% endblock %}
+    </head>
+    <body>
+        {% include 'menu/header.html.twig' %}
+        {% block content %}{% endblock %}
+        {% include 'menu/footer.html.twig' %}
+    </body>
+</html>

@@ -9,15 +9,16 @@
             <div class="col-lg-8">
                 <div class="blog-section-title">
                     <h2>POSTS</h2>
+                    <a class="nav-link" href="{{ path('app_post_create') }}">Create Post</a>
                     <p>ALL THE RECENTS POSTS ON TALKARIA</p>
                 </div>
                 <!-- Sélecteur de catégories -->
                 <div class="category-filter">
                     <label for="categorySelect">Filter by category:</label>
-                    <select id="categorySelect">
-                        <option class="change" value="">All Categories</option>
+                    <select id="categorySelect" onchange="window.location.href=this.value">
+                        <option value="{{ path('app_home', {'page': current_page}) }}">All Categories</option>
                         {% for category in categories %}
-                            <option value="{{ category }}">{{ category }}</option>
+                            <option value="{{ path('app_home', {'page': current_page, 'category': category}) }}" {% if category == selectedCategory %}selected{% endif %}>{{ category }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -31,17 +32,23 @@
                 <div class="blog-post-pagination">
                     <nav aria-label="Page navigation example" class="nav-bg">
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link active" href="#">1</a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
-                            </li>
+                            {% if current_page > 1 %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ path('app_home', {'page': current_page - 1, 'category': selectedCategory}) }}">Previous</a>
+                                </li>
+                            {% endif %}
+
+                            {% for i in 1..total_pages %}
+                                <li class="page-item {% if i == current_page %}active{% endif %}">
+                                    <a class="page-link" href="{{ path('app_home', {'page': i, 'category': selectedCategory}) }}">{{ i }}</a>
+                                </li>
+                            {% endfor %}
+
+                            {% if current_page < total_pages %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ path('app_home', {'page': current_page + 1, 'category': selectedCategory}) }}">Next</a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </nav>
                 </div>
@@ -57,21 +64,26 @@
     </div>
 </section>
 
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#categorySelect').on('change', function () {
-            var selectedCategory = $(this).val(); // C'est une variable JavaScript, pas Twig
-            $('#blogPosts .blog-post').each(function () {
-                var postCategory = $(this).find('.blog-post-tag a').text();
-                if (selectedCategory === '' || postCategory === selectedCategory) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
-        });
-    });
+    function filterByCategory() {
+        var selectedCategory = document.getElementById("categorySelect").value;
+        var url = new URL(window.location.href);
+
+        // Met à jour le paramètre de la catégorie dans l'URL
+        if (selectedCategory) {
+            url.searchParams.set('category', selectedCategory);
+        } else {
+            url.searchParams.delete('category'); // Supprime le paramètre si "All Categories" est sélectionné
+        }
+
+        // Ajoute la pagination dans l'URL
+        url.searchParams.set('page', 1); // Réinitialise à la première page lors du changement de catégorie
+        window.location.href = url.toString(); // Redirige vers l'URL mise à jour
+    }
 </script>
+
 
 {% endblock %}

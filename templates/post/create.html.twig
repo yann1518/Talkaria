@@ -1,0 +1,25 @@
+{% extends 'createbase.html.twig' %}
+
+{% block title %}Create Post{% endblock %}
+
+{% block content %}
+    <h1>Create a New Post</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit">Create Post</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_home') }}">Back to Home</a>
+
+    {# Affichage des erreurs de validation #}
+    {% if form.vars.errors|length > 0 %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in form.vars.errors %}
+                    <li>{{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}
