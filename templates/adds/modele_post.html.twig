@@ -24,6 +24,11 @@
                     <i class="fa fa-clock-o"></i>
                     {{ post.createdAt|date('F j, Y') }} - 2 min <!-- Display the date -->
                 </li>
+                {% if post.imageFilename %}
+                    <img src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="Image" style="max-width: 300px; max-height: 300px;">
+                {% else %}
+                    <p>No image uploaded</p>
+                {% endif %}
             </ul>
         </div>
         <a href="{{ post.link }}" class="blog-post-action">read more <i class="fa fa-angle-right"></i></a>

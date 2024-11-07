@@ -1,0 +1,57 @@
+.blog-post {
+    position: relative; /* Permet de positionner le titre par-dessus l'image */
+    width: 100%; /* L'article occupe toute la largeur de son conteneur */
+    background-color: #f9f9f9; /* Fond blanc ou une autre couleur de votre choix */
+    overflow: hidden; /* Cache tout ce qui dépasse (comme des images trop grandes) */
+}
+
+.blog-post-thumb {
+    position: relative;
+    width: 100%; /* L'image occupe toute la largeur de l'article */
+    height: 100%; /* La hauteur de l'image dépendra de la hauteur de l'article */
+    max-height: 500px; /* Vous pouvez définir une hauteur maximale selon vos besoins */
+}
+
+.post-image {
+    position: absolute; /* L'image sera un fond dans l'élément parent */
+    top: 0;
+    left: 0;
+    width: 100%; /* L'image occupe toute la largeur du conteneur */
+    height: 100%; /* L'image occupe toute la hauteur du conteneur */
+    background-size: cover; /* L'image couvre toute la surface sans déformation */
+    background-position: center; /* L'image est centrée dans le conteneur */
+    z-index: -1; /* L'image reste en arrière-plan */
+}
+
+.blog-post-content {
+    position: relative;
+    padding: 20px;
+    background-color: white; /* Fond de l'article, peut être ajusté */
+    z-index: 1; /* Le contenu reste au-dessus de l'image */
+}
+
+.blog-post-title {
+    position: absolute;
+    top: 50%; /* Centrer verticalement */
+    left: 50%; /* Centrer horizontalement */
+    transform: translate(-50%, -50%); /* Ajuste la position en fonction de la taille du texte */
+    font-size: 2rem; /* Taille du texte, vous pouvez ajuster */
+    color: white; /* Le texte est blanc pour contraster avec l'image */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ombre pour améliorer la lisibilité */
+    z-index: 10; /* Le titre est au-dessus de l'image */
+    padding: 0 10px;
+}
+
+.blog-post-title a {
+    color: white; /* Le titre est blanc */
+    text-decoration: none; /* Pas de soulignement sur le titre */
+}
+
+.blog-post-meta ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.blog-post-meta li {
+    margin-bottom: 5px;
+}

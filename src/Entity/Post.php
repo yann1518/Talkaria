@@ -6,6 +6,8 @@ use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -29,9 +31,13 @@ class Post
 
     #[ORM\Column(length: 255)]
     private ?string $category = null;
-    
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imagePath = null;
+
+    // Propriété pour gérer l'upload de l'image (non persistée)
+    private ?File $imageFile = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $imageFilename = null;
+
     /**
      * @var Collection<int, Comments>
      */
@@ -44,23 +50,18 @@ class Post
     #[ORM\ManyToOne(inversedBy: 'author')]
     private ?Users $users = null;
 
-        public function __construct()
+    #[ORM\ManyToOne(targetEntity: Image::class, cascade: ["persist", "remove"])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Image $image = null;
+
+    public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }
 
-    public function getImagePath(): ?string
-    {
-        return $this->imagePath;
-    }
-
-    public function setImagePath(?string $imagePath): static
-    {
-        $this->imagePath = $imagePath;
-        return $this;
-    }
+    // Getters et Setters
 
     public function getId(): ?int
     {
@@ -70,7 +71,6 @@ class Post
     public function setId(int $id): static
     {
         $this->id = $id;
-
         return $this;
     }
 
@@ -82,7 +82,6 @@ class Post
     public function setTitle(string $title): static
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -94,7 +93,6 @@ class Post
     public function setContent(string $content): static
     {
         $this->content = $content;
-
         return $this;
     }
 
@@ -106,7 +104,6 @@ class Post
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
@@ -118,7 +115,6 @@ class Post
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
-
         return $this;
     }
 
@@ -130,7 +126,6 @@ class Post
     public function setCategory(string $category): static
     {
         $this->category = $category;
-
         return $this;
     }
 
@@ -148,7 +143,6 @@ class Post
             $this->comments->add($comment);
             $comment->setPosts($this);
         }
-
         return $this;
     }
 
@@ -160,7 +154,6 @@ class Post
                 $comment->setPosts(null);
             }
         }
-
         return $this;
     }
 
@@ -172,7 +165,17 @@ class Post
     public function setLink(string $link): static
     {
         $this->link = $link;
+        return $this;
+    }
 
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
         return $this;
     }
 
@@ -184,7 +187,35 @@ class Post
     public function setUsers(?Users $users): static
     {
         $this->users = $users;
+        return $this;
+    }
+
+    // Gestion de l'image téléchargée
+    public function getImageFilename(): ?string
+    {
+        return $this->imageFilename;
+    }
+
+    public function setImageFilename(?string $imageFilename): self
+    {
+        $this->imageFilename = $imageFilename;
+        return $this;
+    }
+
+    // Gestion de la propriété imageFile (fichier téléchargé temporairement)
+    public function setImageFile(?File $imageFile = null): self
+    {
+        $this->imageFile = $imageFile;
+
+        if ($imageFile instanceof UploadedFile) {
+            $this->updatedAt = new \DateTime();
+        }
 
         return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
     }
 }
