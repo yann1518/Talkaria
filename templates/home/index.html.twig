@@ -24,7 +24,7 @@
                 </div>
                 <div class="blog-posts" id="blogPosts">
                     {% for post in posts %}
-                        <!-- Utilisation de l'id et du slug pour générer l'URL du post -->
+                        <!-- Utilisation d'id et slug pour générer l'URL -->
                         {% include 'adds/modele_post.html.twig' with {'post': post} %}
                     {% else %}
                         <p>Aucun article trouvé.</p>

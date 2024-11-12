@@ -1,6 +1,6 @@
 <article class="blog-post">
     <div class="blog-post-thumb">
-        <!-- Lien vers le post avec l'id et le slug -->
+        <!-- Lien post id slug -->
         <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">
             <img src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
         </a>
@@ -10,7 +10,7 @@
             <a href="category.html">{{ post.category }}</a>
         </div>
         <div class="blog-post-title">
-            <!-- Lien vers le post avec l'id et le slug -->
+            <!-- Lien post id slug -->
             <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">{{ post.title }}</a>
         </div>
         <div class="blog-post-meta">
@@ -28,7 +28,7 @@
                 </li>
             </ul>
         </div>
-        <!-- Lien vers le post avec l'id et le slug -->
+        <!-- Lien post id slug -->
         <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}" class="blog-post-action">read more <i class="fa fa-angle-right"></i></a>
     </div>
 </article>
