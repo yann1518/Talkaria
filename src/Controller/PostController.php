@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PostController extends AbstractController
 {
@@ -19,61 +20,50 @@ class PostController extends AbstractController
         // Récupérer tous les posts
         $posts = $entityManager->getRepository(Post::class)->findAll();
 
-        // Retourner la vue avec la liste des posts
         return $this->render('post/index.html.twig', [
             'posts' => $posts,
         ]);
     }
 
     #[Route('/post/create', name: 'app_post_create')]
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    public function create(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-        // Créer une instance de l'entité Post
+        // Créer un nouveau post
         $post = new Post();
-
-        // Créer le formulaire lié à l'entité Post
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
-        // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer l'utilisateur connecté
+            // Associer l'utilisateur connecté au post
             $user = $this->getUser();
-            $post->setUsers($user); // Associe l'utilisateur au post
+            $post->setUsers($user);
 
-            // Gestion de l'upload de l'image
+            // Gérer le téléchargement de l'image
             $imageFile = $form->get('imageFile')->getData();
             if ($imageFile) {
-                // Crée un nom de fichier unique pour l'image
                 $newFilename = uniqid() . '.' . $imageFile->guessExtension();
-
                 try {
-                    // Déplace le fichier dans le répertoire de stockage
                     $imageFile->move(
-                        $this->getParameter('images_directory'), // Répertoire défini dans services.yaml
+                        $this->getParameter('images_directory'),
                         $newFilename
                     );
-                    // Enregistre le nom du fichier dans l'entité
                     $post->setImageFilename($newFilename);
                 } catch (FileException $e) {
-                    // Gérer l'exception en cas d'erreur de téléchargement
                     $this->addFlash('error', 'Erreur lors du téléchargement de l\'image.');
                 }
             }
 
-            // Générer un slug unique pour le post
-            $slug = $this->slugify($post->getTitle());
+            // Générer un slug unique
+            $slug = $this->generateUniqueSlug($post->getTitle(), $entityManager, $slugger);
             $post->setSlug($slug);
 
-            // Sauvegarde du post dans la base de données
+            // Sauvegarder le post dans la base de données
             $entityManager->persist($post);
             $entityManager->flush();
 
-            // Rediriger vers la page d'accueil après la création du post
-            return $this->redirectToRoute('app_home'); // Remplacez par la route souhaitée
+            return $this->redirectToRoute('app_home');
         }
 
-        // Affiche le formulaire de création du post
         return $this->render('post/create.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -82,74 +72,83 @@ class PostController extends AbstractController
     #[Route('/post/{id}/{slug}', name: 'app_post_show')]
     public function show(int $id, string $slug, EntityManagerInterface $entityManager): Response
     {
-        // Récupère le post avec l'ID donné
+        // Récupérer le post avec l'ID et le slug
         $post = $entityManager->getRepository(Post::class)->find($id);
 
         if (!$post || $post->getSlug() !== $slug) {
-            // Si le slug ne correspond pas ou le post n'existe pas, lance une erreur
             throw $this->createNotFoundException('Le post n\'existe pas');
         }
 
-        // Affiche les détails du post
         return $this->render('post/show.html.twig', [
             'post' => $post,
         ]);
     }
 
     #[Route('/post/{id}/edit', name: 'app_post_edit')]
-    public function edit(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(int $id, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-        // Récupère le post à éditer
+        // Récupérer le post à éditer avec l'ID
         $post = $entityManager->getRepository(Post::class)->find($id);
-
+    
         if (!$post) {
+            // Si le post n'existe pas, afficher une erreur
             throw $this->createNotFoundException('Le post n\'existe pas');
         }
-
-        // Crée le formulaire de modification
+    
+        // Créer le formulaire de modification lié au post
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
-
+    
+        // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-            // Sauvegarde les modifications dans la base de données
+            // Regénérer le slug si nécessaire (peut être utilisé si vous changez le titre par exemple)
+            $slug = $this->generateUniqueSlug($post->getTitle(), $entityManager, $slugger);
+            $post->setSlug($slug);
+    
+            // Sauvegarder les modifications dans la base de données
             $entityManager->flush();
-
-            // Redirige après la modification
+    
+            // Rediriger vers la page d'affichage du post
             return $this->redirectToRoute('app_post_show', ['id' => $post->getId(), 'slug' => $post->getSlug()]);
         }
-
+    
         // Affiche le formulaire d'édition du post
         return $this->render('post/edit.html.twig', [
             'form' => $form->createView(),
             'post' => $post,
         ]);
-    }
+    }    
 
     #[Route('/post/{id}/delete', name: 'app_post_delete')]
     public function delete(int $id, EntityManagerInterface $entityManager): Response
     {
-        // Récupère le post à supprimer
+        // Récupérer le post à supprimer
         $post = $entityManager->getRepository(Post::class)->find($id);
 
         if (!$post) {
             throw $this->createNotFoundException('Le post n\'existe pas');
         }
 
-        // Supprime le post de la base de données
+        // Supprimer le post
         $entityManager->remove($post);
         $entityManager->flush();
 
-        // Redirige après la suppression
-        return $this->redirectToRoute('app_home'); // Remplacez par la route souhaitée
+        // Rediriger après la suppression
+        return $this->redirectToRoute('app_home');
     }
 
-    // Fonction pour générer un slug unique à partir du titre du post
-    private function slugify(string $title): string
+    private function generateUniqueSlug(string $title, EntityManagerInterface $entityManager, SluggerInterface $slugger): string
     {
-        // Convertit le titre en slug
-        $slug = preg_replace('/\s+/', '-', $title); // Remplace les espaces par des tirets
-        $slug = strtolower($slug); // Met tout en minuscule
-        $slug = preg_replace('/[^a-z0-9\-]/', '', $slug); // Supprime les caractères non alphanumériques
+        // Générer un slug basé sur le titre
+        $slug = strtolower($slugger->slug($title)->toString());
+        $originalSlug = $slug;
+
+        // Vérifier si le slug est déjà pris et ajouter un suffixe pour garantir l'unicité
+        $i = 1;
+        while ($entityManager->getRepository(Post::class)->findOneBy(['slug' => $slug])) {
+            $slug = $originalSlug . '-' . $i;
+            $i++;
+        }
 
         return $slug;
     }

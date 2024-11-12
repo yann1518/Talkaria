@@ -1,50 +1,96 @@
+/* Styles pour centrer le contenu de la page de détails du post */
+.unique-post-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.unique-post-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+}
+
+.unique-post-header h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.unique-post-header p {
+    color: #666;
+    font-size: 1em;
+    margin: 5px 0;
+}
+
+.unique-post-image {
+    margin: 20px 0;
+}
+
+.unique-post-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.unique-post-content {
+    font-size: 1.2em;
+    line-height: 1.6em;
+    color: #333;
+    margin-top: 20px;
+}
+
 .blog-post {
-    position: relative; /* Permet de positionner le titre par-dessus l'image */
-    width: 100%; /* L'article occupe toute la largeur de son conteneur */
-    background-color: #f9f9f9; /* Fond blanc ou une autre couleur de votre choix */
-    overflow: hidden; /* Cache tout ce qui dépasse (comme des images trop grandes) */
+    position: relative;
+    width: 100%;
+    background-color: #f9f9f9; 
+    overflow: hidden;
 }
 
 .blog-post-thumb {
     position: relative;
-    width: 100%; /* L'image occupe toute la largeur de l'article */
-    height: 100%; /* La hauteur de l'image dépendra de la hauteur de l'article */
-    max-height: 500px; /* Vous pouvez définir une hauteur maximale selon vos besoins */
+    width: 100%;
+    height: 100%;
+    max-height: 500px;
 }
 
 .post-image {
-    position: absolute; /* L'image sera un fond dans l'élément parent */
+    position: absolute; 
     top: 0;
     left: 0;
-    width: 100%; /* L'image occupe toute la largeur du conteneur */
-    height: 100%; /* L'image occupe toute la hauteur du conteneur */
-    background-size: cover; /* L'image couvre toute la surface sans déformation */
-    background-position: center; /* L'image est centrée dans le conteneur */
-    z-index: -1; /* L'image reste en arrière-plan */
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center; 
+    z-index: -1;
 }
 
 .blog-post-content {
     position: relative;
     padding: 20px;
-    background-color: white; /* Fond de l'article, peut être ajusté */
-    z-index: 1; /* Le contenu reste au-dessus de l'image */
+    background-color: white;
+    z-index: 1;
 }
 
 .blog-post-title {
     position: absolute;
-    top: 50%; /* Centrer verticalement */
-    left: 50%; /* Centrer horizontalement */
-    transform: translate(-50%, -50%); /* Ajuste la position en fonction de la taille du texte */
-    font-size: 2rem; /* Taille du texte, vous pouvez ajuster */
-    color: white; /* Le texte est blanc pour contraster avec l'image */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ombre pour améliorer la lisibilité */
-    z-index: 10; /* Le titre est au-dessus de l'image */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    font-size: 2rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+    z-index: 10;
     padding: 0 10px;
 }
 
 .blog-post-title a {
-    color: white; /* Le titre est blanc */
-    text-decoration: none; /* Pas de soulignement sur le titre */
+    color: white; 
+    text-decoration: none; 
 }
 
 .blog-post-meta ul {
@@ -54,4 +100,121 @@
 
 .blog-post-meta li {
     margin-bottom: 5px;
+}
+
+.content-container {
+    width: 80%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Section pour les articles */
+.article-container {
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.article-container:hover {
+    transform: translateY(-5px);
+}
+
+/* Titre de l'article */
+.article-title h1, .article-title h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin: 0;
+}
+
+.article-title h1 {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+/* Image de l'article */
+.article-thumbnail img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Contenu de l'article */
+.article-content p {
+    font-size: 1em;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Informations de l'auteur */
+.article-meta-info {
+    font-size: 0.9em;
+    color: #888;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    margin-top: 15px;
+}
+
+.article-meta-info img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.article-meta-info a {
+    color: #888;
+    text-decoration: none;
+}
+
+.article-meta-info a:hover {
+    color: #333;
+}
+
+/* Boutons */
+.article-read-more {
+    display: inline-block;
+    color: #007bff;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 15px;
+    text-decoration: none;
+}
+
+.article-read-more:hover {
+    color: #0056b3;
+}
+
+/* Pagination */
+.custom-pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+}
+
+.custom-pagination .page-item {
+    margin: 0 5px;
+}
+
+.custom-pagination .page-link {
+    color: #007bff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.custom-pagination .page-link:hover {
+    background-color: #007bff;
+    color: #fff;
 }
