@@ -24,7 +24,6 @@ class PostType extends AbstractType
                 'label' => 'Category',
                 'required' => true, 
             ])
-            ->add('link', TextType::class)
             ->add('imageFile', FileType::class, [
                 'label' => 'Upload an Image',
                 'mapped' => false,

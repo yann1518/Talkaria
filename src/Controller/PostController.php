@@ -61,11 +61,15 @@ class PostController extends AbstractController
                 }
             }
 
+            // Générer un slug unique pour le post
+            $slug = $this->slugify($post->getTitle());
+            $post->setSlug($slug);
+
             // Sauvegarde du post dans la base de données
             $entityManager->persist($post);
             $entityManager->flush();
 
-            // Rediriger après la création du post
+            // Rediriger vers la page d'accueil après la création du post
             return $this->redirectToRoute('app_home'); // Remplacez par la route souhaitée
         }
 
@@ -75,13 +79,14 @@ class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/post/{id}', name: 'app_post_show')]
-    public function show(int $id, EntityManagerInterface $entityManager): Response
+    #[Route('/post/{id}/{slug}', name: 'app_post_show')]
+    public function show(int $id, string $slug, EntityManagerInterface $entityManager): Response
     {
         // Récupère le post avec l'ID donné
         $post = $entityManager->getRepository(Post::class)->find($id);
 
-        if (!$post) {
+        if (!$post || $post->getSlug() !== $slug) {
+            // Si le slug ne correspond pas ou le post n'existe pas, lance une erreur
             throw $this->createNotFoundException('Le post n\'existe pas');
         }
 
@@ -110,7 +115,7 @@ class PostController extends AbstractController
             $entityManager->flush();
 
             // Redirige après la modification
-            return $this->redirectToRoute('app_post_show', ['id' => $post->getId()]);
+            return $this->redirectToRoute('app_post_show', ['id' => $post->getId(), 'slug' => $post->getSlug()]);
         }
 
         // Affiche le formulaire d'édition du post
@@ -136,5 +141,16 @@ class PostController extends AbstractController
 
         // Redirige après la suppression
         return $this->redirectToRoute('app_home'); // Remplacez par la route souhaitée
+    }
+
+    // Fonction pour générer un slug unique à partir du titre du post
+    private function slugify(string $title): string
+    {
+        // Convertit le titre en slug
+        $slug = preg_replace('/\s+/', '-', $title); // Remplace les espaces par des tirets
+        $slug = strtolower($slug); // Met tout en minuscule
+        $slug = preg_replace('/[^a-z0-9\-]/', '', $slug); // Supprime les caractères non alphanumériques
+
+        return $slug;
     }
 }

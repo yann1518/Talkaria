@@ -1,7 +1,8 @@
 <article class="blog-post">
     <div class="blog-post-thumb">
-        <a href="{{ post.link }}">
-            <img src="{{ asset('path/to/your/image.jpg') }}" alt="{{ post.title }}">
+        <!-- Lien vers le post avec l'id et le slug -->
+        <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">
+            <img src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
         </a>
     </div>
     <div class="blog-post-content">
@@ -9,7 +10,8 @@
             <a href="category.html">{{ post.category }}</a>
         </div>
         <div class="blog-post-title">
-            <a href="{{ post.link }}">{{ post.title }}</a>
+            <!-- Lien vers le post avec l'id et le slug -->
+            <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">{{ post.title }}</a>
         </div>
         <div class="blog-post-meta">
             <ul>
@@ -19,18 +21,14 @@
                         {% else %}
                             {{ 'unknown' }}
                         {% endif %}
-                    </a></li> <!-- Display the username -->
+                    </a></li>
                 <li>
                     <i class="fa fa-clock-o"></i>
-                    {{ post.createdAt|date('F j, Y') }} - 2 min <!-- Display the date -->
+                    {{ post.createdAt|date('F j, Y') }} - 2 min
                 </li>
-                {% if post.imageFilename %}
-                    <img src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="Image" style="max-width: 300px; max-height: 300px;">
-                {% else %}
-                    <p>No image uploaded</p>
-                {% endif %}
             </ul>
         </div>
-        <a href="{{ post.link }}" class="blog-post-action">read more <i class="fa fa-angle-right"></i></a>
+        <!-- Lien vers le post avec l'id et le slug -->
+        <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}" class="blog-post-action">read more <i class="fa fa-angle-right"></i></a>
     </div>
 </article>

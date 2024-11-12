@@ -27,9 +27,10 @@ class PostCrudController extends AbstractCrudController
             DateTimeField::new('createdAt')->setDisabled(),
             DateTimeField::new('updatedAt')->setDisabled(),
             TextField::new('category'),
+            TextField::new('slug') // Ajout du champ slug
+                ->setDisabled(), // Vous pouvez aussi désactiver l'édition si nécessaire
             AssociationField::new('comments'),
             AssociationField::new('users'),
-            TextField::new('link'),
         ];
     }
 }

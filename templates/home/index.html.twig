@@ -24,7 +24,8 @@
                 </div>
                 <div class="blog-posts" id="blogPosts">
                     {% for post in posts %}
-                        {% include 'adds/modele_post.html.twig' %}
+                        <!-- Utilisation de l'id et du slug pour générer l'URL du post -->
+                        {% include 'adds/modele_post.html.twig' with {'post': post} %}
                     {% else %}
                         <p>Aucun article trouvé.</p>
                     {% endfor %}
@@ -64,8 +65,6 @@
     </div>
 </section>
 
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function filterByCategory() {
@@ -84,6 +83,5 @@
         window.location.href = url.toString(); // Redirige vers l'URL mise à jour
     }
 </script>
-
 
 {% endblock %}

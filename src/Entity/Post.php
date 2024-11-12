@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -44,15 +45,15 @@ class Post
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'posts')]
     private Collection $comments;
 
-    #[ORM\Column(length: 255)]
-    private ?string $link = null;
-
     #[ORM\ManyToOne(inversedBy: 'author')]
     private ?Users $users = null;
 
     #[ORM\ManyToOne(targetEntity: Image::class, cascade: ["persist", "remove"])]
     #[ORM\JoinColumn(nullable: true)]
     private ?Image $image = null;
+
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -157,17 +158,6 @@ class Post
         return $this;
     }
 
-    public function getLink(): ?string
-    {
-        return $this->link;
-    }
-
-    public function setLink(string $link): static
-    {
-        $this->link = $link;
-        return $this;
-    }
-
     public function getImage(): ?Image
     {
         return $this->image;
@@ -217,5 +207,17 @@ class Post
     public function getImageFile(): ?File
     {
         return $this->imageFile;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }
