@@ -27,7 +27,7 @@
     </div>
 
     {% if app.user and app.user == post.users %}
-        <!-- Affiche le bouton "Modifier" uniquement si l'utilisateur connecté est l'auteur -->
+        <!-- Affiche le bouton "Modifier le post" uniquement si l'utilisateur connecté est l'auteur -->
         <div class="post-edit-btn">
             <a href="{{ path('app_post_edit', { 'id': post.id, 'slug': post.slug }) }}" class="btn btn-primary">Modifier le post</a>
         </div>

@@ -2,7 +2,7 @@
     <div class="blog-post-thumb">
         <!-- Lien post id slug -->
         <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">
-            <img src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
+            <img class="prespost"src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
         </a>
     </div>
     <div class="blog-post-content">
