@@ -1,4 +1,9 @@
 api_platform:
+    swagger:
+        api_keys:
+            - name: Authorization
+              type: header
+              key: Authorization  # This is the name used in the `apiKey` definition
     title: Hello API Platform
     version: 1.0.0
     formats:
@@ -15,3 +20,4 @@ api_platform:
             standard_put: true
             rfc_7807_compliant_errors: true
     use_symfony_listeners: true
+
