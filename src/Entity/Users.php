@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,6 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ApiResource]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -208,7 +210,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAuthor(Post $author): static
     {
         if ($this->author->removeElement($author)) {
-            // set the owning side to null (unless already changed)
+
             if ($author->getUsers() === $this) {
                 $author->setUsers(null);
             }
