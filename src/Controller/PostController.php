@@ -11,9 +11,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Core\Annotation\IsGranted;
 
 class PostController extends AbstractController
 {
+    #[IsGranted('ROLE_USER')]
     #[Route('/post', name: 'app_post')]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -81,8 +83,13 @@ class PostController extends AbstractController
     {
         $post = $entityManager->getRepository(Post::class)->find($id);
 
-        if (!$post || $post->getSlug() !== $slug) {
-            throw $this->createNotFoundException('Le post n\'existe pas');
+        if (!$post) {
+            throw $this->createNotFoundException('Le post n\'existe pas. ID: ' . $id);
+        }
+
+        // Vérifiez que le slug correspond à celui du post
+        if ($post->getSlug() !== $slug) {
+            throw $this->createNotFoundException('Le post n\'existe pas. ID: ' . $id);
         }
 
         return $this->render('post/show.html.twig', [
@@ -93,37 +100,24 @@ class PostController extends AbstractController
     #[Route('/post/{id}/edit', name: 'app_post_edit')]
     public function edit(int $id, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-
         $post = $entityManager->getRepository(Post::class)->find($id);
 
-        if (!$post || $post->getSlug() !== $slug) {
+        if (!$post) {
             throw $this->createNotFoundException('Le post n\'existe pas');
         }
-        
-
-        if ($post->getUsers() !== $this->getUser()) {
-            throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à modifier ce post.');
-        }
-
 
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $slug = $this->generateUniqueSlug($post->getTitle(), $entityManager, $slugger);
-            $post->setSlug($slug);
-
-
+            // Gérer l'enregistrement des modifications
             $entityManager->flush();
-
-            // Rediriger vers la page du post modifié
             return $this->redirectToRoute('app_post_show', ['id' => $post->getId(), 'slug' => $post->getSlug()]);
         }
 
-        // Afficher le formulaire de modification
-        return $this->render('post/edit.html.twig', [
+        return $this->render('post/create_edit.html.twig', [
             'form' => $form->createView(),
+            'isEditMode' => true,
             'post' => $post,
         ]);
     }

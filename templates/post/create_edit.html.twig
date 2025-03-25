@@ -6,7 +6,9 @@
     <h1>{{ isEditMode ? 'Modifier le post' : 'Créer un post' }}</h1>
     
     {{ form_start(form) }}
+        {{ form_errors(form.title) }}
         {{ form_row(form.title) }}
+        {{ form_errors(form.content) }}
         {{ form_row(form.content) }}
         {{ form_row(form.imageFile) }}
         <button type="submit">{{ isEditMode ? 'Enregistrer les modifications' : 'Créer le post' }}</button>

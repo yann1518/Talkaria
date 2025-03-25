@@ -3,29 +3,29 @@
 {% block title %}Accueil{% endblock %}
 
 {% block content %}
-<section class="blog">
+<section class="blog home-background">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-12 col-md-8" style="padding-right: 50px;">
                 <div class="blog-section-title">
                     <h2>POSTS</h2>
                     <a class="nav-link" href="{{ path('app_post_create_or_edit') }}">Create Post</a>
                     <p>ALL THE RECENTS POSTS ON TALKARIA</p>
-                </div>
-                <!-- Sélecteur de catégories -->
-                <div class="category-filter">
-                    <label for="categorySelect">Filter by category:</label>
-                    <select id="categorySelect" onchange="window.location.href=this.value">
-                        <option value="{{ path('app_home', {'page': current_page}) }}">All Categories</option>
-                        {% for category in categories %}
-                            <option value="{{ path('app_home', {'page': current_page, 'category': category}) }}" {% if category == selectedCategory %}selected{% endif %}>{{ category }}</option>
-                        {% endfor %}
-                    </select>
+                    <div class="category-filter">
+                        <label for="categorySelect">Filter by category:</label>
+                        <select id="categorySelect" onchange="filterByCategory()">
+                            <option value="{{ path('app_home', {'page': current_page}) }}">All Categories</option>
+                            {% for category in categories %}
+                                <option value="{{ category }}" {% if category == selectedCategory %}selected{% endif %}>{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
                 <div class="blog-posts" id="blogPosts">
                     {% for post in posts %}
-                        <!-- Utilisation d'id et slug pour générer l'URL -->
-                        {% include 'adds/modele_post.html.twig' with {'post': post} %}
+                        <div class="post">
+                            {% include 'adds/modele_post.html.twig' with {'post': post} %}
+                        </div>
                     {% else %}
                         <p>Aucun article trouvé.</p>
                     {% endfor %}
@@ -35,29 +35,35 @@
                         <ul class="pagination">
                             {% if current_page > 1 %}
                                 <li class="page-item">
-                                    <a class="page-link" href="{{ path('app_home', {'page': current_page - 1, 'category': selectedCategory}) }}">Previous</a>
+                                    <a class="page-link" href="{{ path('app_home', {'page': current_page - 1}) }}">Précédent</a>
                                 </li>
                             {% endif %}
-
-                            {% for i in 1..total_pages %}
-                                <li class="page-item {% if i == current_page %}active{% endif %}">
-                                    <a class="page-link" href="{{ path('app_home', {'page': i, 'category': selectedCategory}) }}">{{ i }}</a>
-                                </li>
-                            {% endfor %}
-
+                            <li class="page-item active"><a class="page-link" href="#">{{ current_page }}</a></li>
                             {% if current_page < total_pages %}
                                 <li class="page-item">
-                                    <a class="page-link" href="{{ path('app_home', {'page': current_page + 1, 'category': selectedCategory}) }}">Next</a>
+                                    <a class="page-link" href="{{ path('app_home', {'page': current_page + 1}) }}">Suivant</a>
                                 </li>
                             {% endif %}
                         </ul>
                     </nav>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-4" style="padding-left: 50px;">
                 <div class="blog-post-widget">
                     <div class="latest-widget-title">
-                        <h2>Trending Post</h2>
+                        <h2>Trending Posts</h2>
+                    </div>
+                    <div class="trending-posts">
+                        {% for post in posts %}
+                            <div class="trending-post" style="position: relative;">
+                                <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">
+                                    <img class="prespost" src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
+                                    <div class="title-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; text-align: center; z-index: 1;">
+                                        <h2>{{ post.title }}</h2>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

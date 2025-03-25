@@ -1,34 +1,31 @@
 <article class="blog-post">
     <div class="blog-post-thumb">
-        <!-- Lien post id slug -->
         <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">
-            <img class="prespost"src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
+            <img class="prespost" src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
         </a>
     </div>
-    <div class="blog-post-content">
+    <div class="blog-post-content" style="flex: 1; padding-left: 20px;">
+        <div class="blog-post-title">
+            <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">{{ post.title }}</a>
+        </div>
         <div class="blog-post-tag">
             <a href="category.html">{{ post.category }}</a>
-        </div>
-        <div class="blog-post-title">
-            <!-- Lien post id slug -->
-            <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">{{ post.title }}</a>
         </div>
         <div class="blog-post-meta">
             <ul>
                 <li>By <a href="about.html">
-                        {% if post.users is not empty %}
-                            {{ post.users.username }}
-                        {% else %}
-                            {{ 'unknown' }}
-                        {% endif %}
-                    </a></li>
+                    {% if post.users is not empty %}
+                        {{ post.users.username }}
+                    {% else %}
+                        {{ 'unknown' }}
+                    {% endif %}
+                </a></li>
                 <li>
                     <i class="fa fa-clock-o"></i>
                     {{ post.createdAt|date('F j, Y') }} - 2 min
                 </li>
             </ul>
         </div>
-        <!-- Lien post id slug -->
         <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}" class="blog-post-action">read more <i class="fa fa-angle-right"></i></a>
     </div>
 </article>

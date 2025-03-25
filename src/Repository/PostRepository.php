@@ -40,4 +40,13 @@ class PostRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+//    public function findTrendingPosts(int $limit = 5): array {
+//        return $this->createQueryBuilder('p')
+//            ->orderBy('p.views', 'DESC')
+//            ->setMaxResults($limit)
+//            ->getQuery()
+//            ->getResult();
+//    }
+
 }

@@ -1,0 +1,54 @@
+.trending-post {
+    position: relative;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.trending-post::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.144); /* Filtre sombre */
+    z-index: 0; /* S'assure que le filtre est derrière le texte */
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.8), 0 0 30px rgba(255, 105, 180, 0.6);
+}
+
+.trending-post img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    position: relative;
+    z-index: -1; /* L'image doit être en arrière-plan */
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.8), 0 0 30px rgba(255, 105, 180, 0.6);
+}
+
+.trending-post .title-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    z-index: 1; /* Le texte est au-dessus du filtre */
+}
+
+.title-overlay h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 
+        1px 1px 3px rgba(255, 0, 242, 0.5),  /* Ombre en bas à droite */
+        -1px -1px 3px rgba(255, 0, 242, 0.5), /* Ombre en haut à gauche */
+        -1px 1px 3px rgba(255, 0, 242, 0.5),  /* Ombre en bas à gauche */
+        1px -1px 3px rgba(255, 0, 242, 0.5);  /* Ombre en haut à droite */
+}
+
+
+.prespost {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}

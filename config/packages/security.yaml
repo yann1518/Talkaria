@@ -45,6 +45,9 @@ security:
         - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }  # Accès sécurisé aux APIs
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/blog, roles: ROLE_USER }
+        - { path: ^/home, roles: ROLE_USER }
+        - { path: ^/post, roles: ROLE_USER }
         - { path: ^/, roles: PUBLIC_ACCESS }  # Accès public à la racine
 
 when@test:

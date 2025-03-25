@@ -3,7 +3,7 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-<section class="unique-post-container">
+<section class="container post-background">
     <div class="unique-post-header">
         <h1>{{ post.title }}</h1>
         <p>By 
@@ -29,7 +29,7 @@
     {% if app.user and app.user == post.users %}
         <!-- Affiche le bouton "Modifier le post" uniquement si l'utilisateur connecté est l'auteur -->
         <div class="post-edit-btn">
-            <a href="{{ path('app_post_edit', { 'id': post.id, 'slug': post.slug }) }}" class="btn btn-primary">Modifier le post</a>
+            <a href="{{ path('app_post_create_or_edit', {'id': post.id}) }}" class="btn btn-primary">Modifier</a>
         </div>
     {% endif %}
 </section>
