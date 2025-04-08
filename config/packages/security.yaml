@@ -42,7 +42,7 @@ security:
         - { path: ^/auth, roles: PUBLIC_ACCESS }  # Route de login JWT
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }  # Swagger UI Docs
         - { path: ^/docs, roles: PUBLIC_ACCESS }  # Swagger UI Docs
-        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }  # Accès sécurisé aux APIs
+        - { path: ^/api/, roles: ROLE_USER }  # Accès sécurisé aux APIs
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/blog, roles: ROLE_USER }
