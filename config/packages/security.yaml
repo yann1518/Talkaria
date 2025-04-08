@@ -48,6 +48,7 @@ security:
         - { path: ^/blog, roles: ROLE_USER }
         - { path: ^/home, roles: ROLE_USER }
         - { path: ^/post, roles: ROLE_USER }
+        - { path: ^/posts, roles: ROLE_USER }
         - { path: ^/, roles: PUBLIC_ACCESS }  # Accès public à la racine
 
 when@test:
