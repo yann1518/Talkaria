@@ -44,10 +44,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Comments::class, inversedBy: 'users')]
     private Collection $comments;
 
-    // Utilisation de l'email comme identifiant unique
-    #[ORM\Column(length: 255, unique: true)]
-    private ?string $email = null;
-
     /**
      * @var Collection<int, Post>
      */
