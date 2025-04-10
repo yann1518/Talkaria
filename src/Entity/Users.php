@@ -44,8 +44,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Comments::class, inversedBy: 'users')]
     private Collection $comments;
 
-    #[ORM\Column(length: 255)]
-    private ?string $username = null;
+    // Utilisation de l'email comme identifiant unique
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $email = null;
 
     /**
      * @var Collection<int, Post>
@@ -62,7 +63,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(): string
     {
-        return $this->getUsername() ?? $this->getemail() ?? 'Unnamed User';
+        return $this->getEmail() ?? 'Unnamed User';
     }
 
     public function getId(): ?int
@@ -89,7 +90,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->email; // Utilisation de l'email comme identifiant
     }
 
     /**
@@ -136,7 +137,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
+        // Si tu stockes des données temporaires ou sensibles, tu peux les effacer ici
         // $this->plainPassword = null;
     }
 
@@ -151,7 +152,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 
     /**
      * @return Collection<int, Comments>
@@ -177,15 +177,15 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // Utilisation de l'email à la place de username
     public function getUsername(): ?string
     {
-        return $this->username;
+        return $this->getEmail(); // Retourne l'email au lieu du username
     }
 
     public function setUsername(string $username): static
     {
-        $this->username = $username;
-
+        $this->email = $username; // Définit l'email au lieu de username
         return $this;
     }
 
@@ -210,7 +210,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAuthor(Post $author): static
     {
         if ($this->author->removeElement($author)) {
-
             if ($author->getUsers() === $this) {
                 $author->setUsers(null);
             }

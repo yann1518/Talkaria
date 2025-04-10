@@ -20,11 +20,11 @@
 
             $payload = $event->getData();
 
-            // Remplace "username" par "email" dans le payload
-            $payload['email'] = $user->getUserIdentifier(); // L'email du user
-            unset($payload['username']); // On peut enlever username du payload
+            $payload['email'] = $user->getUserIdentifier();
+            unset($payload['username']);
 
             $event->setData($payload);
         }
     }
+
 
