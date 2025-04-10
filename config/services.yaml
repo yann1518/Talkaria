@@ -7,9 +7,6 @@ parameters:
     images_directory: '%kernel.project_dir%/public/uploads/imagesclient'
 
 services:
-    App\EventSubscriber\JWTCreatedSubscriber:
-        tags: [ 'kernel.event_subscriber' ]
-
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
