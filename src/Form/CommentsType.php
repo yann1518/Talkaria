@@ -3,9 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Comments;
-use App\Entity\Post;
-use App\Entity\Users;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,20 +12,8 @@ class CommentsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('content')
-            ->add('createdAt', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('author')
-            ->add('post')
-            ->add('posts', EntityType::class, [
-                'class' => Post::class,
-                'choice_label' => 'id',
-            ])
-            ->add('users', EntityType::class, [
-                'class' => Users::class,
-                'choice_label' => 'id',
-                'multiple' => true,
+            ->add('content', null, [
+                'label' => 'Votre commentaire',
             ])
         ;
     }

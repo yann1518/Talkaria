@@ -26,9 +26,6 @@ class Comments
     #[ORM\Column(length: 255)]
     private ?string $author = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $post = null;
-
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Post $posts = null;
@@ -88,18 +85,6 @@ class Comments
     public function setAuthor(string $author): static
     {
         $this->author = $author;
-
-        return $this;
-    }
-
-    public function getPost(): ?string
-    {
-        return $this->post;
-    }
-
-    public function setPost(string $post): static
-    {
-        $this->post = $post;
 
         return $this;
     }

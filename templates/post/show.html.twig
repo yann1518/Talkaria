@@ -26,4 +26,25 @@
         <p>{{ post.content|raw }}</p>
     </div>
 </section>
+
+<hr>
+<div class="comments-section">
+    <h3>Commentaires</h3>
+    {% for comment in comments %}
+        <div class="comment">
+            <strong>{{ comment.author }}</strong>
+            <span class="comment-date">{{ comment.createdAt|date('d/m/Y H:i') }}</span>
+            <p>{{ comment.content }}</p>
+        </div>
+    {% else %}
+        <p>Aucun commentaire pour ce post.</p>
+    {% endfor %}
+
+    <h4>Ajouter un commentaire</h4>
+    {{ form_start(commentForm) }}
+        {{ form_row(commentForm.content) }}
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    {{ form_end(commentForm) }}
+</div>
+
 {% endblock %}
