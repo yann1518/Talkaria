@@ -11,6 +11,21 @@
         <div class="blog-post-tag">
             <a href="category.html">{{ post.category }}</a>
         </div>
+        {% if is_granted('ROLE_ADMIN') or (app.user and post.users and app.user.id == post.users.id) %}
+            <a href="{{ path('app_post_create_or_edit', {'id': post.id}) }}"
+               class="btn-modifier-post">
+                <i class="fa fa-edit"></i> Modifier
+            </a>
+        {% endif %}
+        <form method="post"
+          action="{{ path('app_post_delete', {'id': post.id}) }}"
+          style="display:inline"
+          onsubmit="return confirm('Voulez-vous vraiment supprimer ce post ?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+            <button class="btn-supprimer-post" type="submit">
+                <i class="fa fa-trash"></i> Supprimer
+            </button>
+        </form>
         <div class="blog-post-meta">
             <ul>
                 <li>By <a href="about.html">

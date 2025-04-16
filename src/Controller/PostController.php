@@ -78,7 +78,7 @@ class PostController extends AbstractController
         ]);
     }
     
-    #[Route('/post/{id}/{slug}', name: 'app_post_show')]
+    #[Route('/post/show/{id}/{slug}', name: 'app_post_show')]
     public function show(int $id, string $slug, EntityManagerInterface $entityManager): Response
     {
         $post = $entityManager->getRepository(Post::class)->find($id);
@@ -122,21 +122,26 @@ class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/post/{id}/delete', name: 'app_post_delete')]
-    public function delete(int $id, EntityManagerInterface $entityManager): Response
+    #[Route('/post/{id}/delete', name: 'app_post_delete', methods: ['POST'])]
+    public function delete(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Récupérer le post à supprimer
+        dump($id);
         $post = $entityManager->getRepository(Post::class)->find($id);
+        dump($post);
 
         if (!$post) {
-            throw $this->createNotFoundException('Le post n\'existe pas');
+            throw $this->createNotFoundException('Le post n\'existe pas. ID: ' . $id);
         }
 
-        // Supprimer le post
+        // Vérification du token CSRF
+        $submittedToken = $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('delete' . $post->getId(), $submittedToken)) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
+
         $entityManager->remove($post);
         $entityManager->flush();
 
-        // Rediriger après la suppression
         return $this->redirectToRoute('app_home');
     }
 
