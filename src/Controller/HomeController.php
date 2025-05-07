@@ -53,4 +53,10 @@ class HomeController extends AbstractController
             'total_pages' => $totalPages, // Passer le total des pages
         ]);
     }
+
+    #[Route('/liens-application', name: 'app_liens_application')]
+    public function liensApplication(): Response
+    {
+        return $this->render('liens_appli/lienappli.html.twig');
+    }
 }
