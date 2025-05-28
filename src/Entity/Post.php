@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Doctrine\ORM\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ApiResource]
