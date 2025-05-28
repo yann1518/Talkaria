@@ -15,7 +15,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ApiResource]
 #[ORM\HasLifecycleCallbacks]
-class Post implements \Doctrine\ORM\Events\LifecycleEventArgs
+class Post
 {
     #[ORM\PreUpdate]
     public function preUpdate()
