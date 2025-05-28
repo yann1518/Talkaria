@@ -10,11 +10,25 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Doctrine\ORM\LifecycleEventArgs;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ApiResource]
-class Post
+#[ORM\HasLifecycleCallbacks]
+class Post implements \Doctrine\ORM\Events\LifecycleEventArgs
 {
+    public function prePersist(LifecycleEventArgs $event)
+    {
+        if ($this->users === null) {
+            $this->users = $event->getObjectManager()->getReference(Users::class, $event->getObjectManager()->getRepository(Users::class)->findOneBy(['email' => $this->email])->getId());
+        }
+    }
+
+    public function preUpdate(LifecycleEventArgs $event)
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -46,6 +60,14 @@ class Post
      */
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'posts')]
     private Collection $comments;
+
+    #[ORM\PrePersist]
+    public function prePersist()
+    {
+        if ($this->users === null) {
+            $this->users = $this->getUser();
+        }
+    }
 
     #[ORM\ManyToOne(inversedBy: 'author')]
     private ?Users $users = null;
