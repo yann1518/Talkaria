@@ -17,14 +17,8 @@ use Doctrine\ORM\LifecycleEventArgs;
 #[ORM\HasLifecycleCallbacks]
 class Post implements \Doctrine\ORM\Events\LifecycleEventArgs
 {
-    public function prePersist(LifecycleEventArgs $event)
-    {
-        if ($this->users === null) {
-            $this->users = $event->getObjectManager()->getReference(Users::class, $event->getObjectManager()->getRepository(Users::class)->findOneBy(['email' => $this->email])->getId());
-        }
-    }
-
-    public function preUpdate(LifecycleEventArgs $event)
+    #[ORM\PreUpdate]
+    public function preUpdate()
     {
         $this->updatedAt = new \DateTimeImmutable();
     }
@@ -64,8 +58,13 @@ class Post implements \Doctrine\ORM\Events\LifecycleEventArgs
     #[ORM\PrePersist]
     public function prePersist()
     {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+        
         if ($this->users === null) {
-            $this->users = $this->getUser();
+            // You might want to set a default user or handle this case appropriately
+            // The previous implementation was trying to get a user by email but 'email' is not a property of the Post entity
+            // $this->users = $this->getUser(); // This line is commented out as getUser() doesn't exist in this context
         }
     }
 
