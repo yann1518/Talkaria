@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Entity\Comments;
+use App\Entity\User;
 use App\Form\PostType;
 use App\Form\CommentsType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,8 +39,46 @@ class PostController extends AbstractController
         if ($id && !$post) {
             throw $this->createNotFoundException('Le post n\'existe pas');
         }
+
+        // Vérifier si c'est une requête API
+        $isApiRequest = $request->headers->get('Content-Type') === 'application/ld+json';
+        
+        if ($isApiRequest) {
+            // Décoder les données JSON
+            $data = json_decode($request->getContent(), true);
+            
+            // Mettre à jour le post avec les données reçues
+            $post->setTitle($data['title']);
+            $post->setContent($data['content']);
+            $post->setCategory($data['category']);
+            $post->setImageFilename($data['imageFilename'] ?? null);
+            $post->setSlug($data['slug']);
+            
+            // Si c'est un nouveau post, définir la date de création
+            if (!$post->getId()) {
+                $post->setCreatedAt(new \DateTimeImmutable());
+            }
+            
+            // Récupérer l'utilisateur depuis l'URL fournie (ex: /api/users/1)
+            if (isset($data['users'])) {
+                $userId = basename($data['users']);
+                $user = $entityManager->getRepository(User::class)->find($userId);
+                if ($user) {
+                    $post->setUsers($user);
+                }
+            }
+            
+            $entityManager->persist($post);
+            $entityManager->flush();
+            
+            return $this->json([
+                'id' => $post->getId(),
+                'title' => $post->getTitle(),
+                'users' => $post->getUsers() ? ['id' => $post->getUsers()->getId()] : null
+            ], Response::HTTP_CREATED);
+        }
     
-        // Crée ou pré-remplit le formulaire avec le post existant
+        // Traitement normal pour le formulaire web
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
     
@@ -47,6 +86,7 @@ class PostController extends AbstractController
             if (!$post->getId()) {
                 // Associer l'utilisateur connecté si nouveau post
                 $post->setUsers($this->getUser());
+                $post->setCreatedAt(new \DateTimeImmutable());
             }
     
             // Gérer le téléchargement de l'image

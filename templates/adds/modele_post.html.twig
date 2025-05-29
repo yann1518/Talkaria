@@ -17,7 +17,7 @@
                 <i class="fa fa-edit"></i> Modifier
             </a>
         {% endif %}
-        {% if app.user and (app.user.id == post.users.id or is_granted('ROLE_ADMIN')) %}
+        {% if app.user and post.users is not null and (app.user.id == post.users.id or is_granted('ROLE_ADMIN')) %}
         <form method="post"
           action="{{ path('app_post_delete', {'id': post.id}) }}"
           style="display:inline"

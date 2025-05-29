@@ -20,6 +20,13 @@ class HomeController extends AbstractController
 
         // Récupération de tous les posts
         $posts = $postRepository->findAll();
+        
+        // S'assurer que chaque post a un utilisateur
+        foreach ($posts as $post) {
+            if ($post->getUsers() === null) {
+                throw new \RuntimeException(sprintf('Le post avec l\'ID %d n\'a pas d\'utilisateur associé', $post->getId()));
+            }
+        }
 
         // Récupération des catégories existantes dans les posts
         $categories = array_unique(array_map(function ($post) {
