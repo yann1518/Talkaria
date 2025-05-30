@@ -32,17 +32,20 @@ body {
   gap: 1.3em;
 }
 .blog-post-thumb-fixed {
-  width: 90px;
-  height: 90px;
-  min-width: 90px;
-  min-height: 90px;
-  max-width: 90px;
-  max-height: 90px;
+  width: 120px;
+  height: 120px;
+  min-width: 120px;
+  min-height: 120px;
+  max-width: 120px;
+  max-height: 120px;
   overflow: hidden;
   border-radius: var(--border-radius);
   position: relative;
   background: #f7f7fa;
   box-shadow: 0 2px 8px rgba(108,71,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .blog-post-thumb-fixed img.prespost {
   width: 100%;
@@ -50,6 +53,80 @@ body {
   object-fit: cover;
   border-radius: var(--border-radius);
 }
+
+/* Centrage vertical du contenu */
+.post-card-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.7em;
+  position: relative;
+}
+
+/* Titre stylé */
+.styled-title a {
+  font-size: 1.45em;
+  font-weight: 900;
+  color: var(--primary-dark);
+  text-shadow: 0 2px 8px #ede7fe, 0 1px 1px #fff;
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+  padding: 0.1em 0;
+  border-bottom: 2.5px solid var(--primary-light);
+  border-radius: 4px;
+  transition: color 0.2s, text-shadow 0.2s;
+  text-decoration: none;
+}
+.styled-title a:hover {
+  color: var(--primary);
+  text-shadow: 0 2px 14px #c9a43a, 0 1px 1px #fff;
+  border-bottom: 2.5px solid #ffe082;
+}
+
+/* Tag trending doré à droite */
+.trending-tag-gold {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, #ffe082 60%, #fffbe7 100%);
+  color: #b99115;
+  font-weight: 800;
+  font-size: 1em;
+  padding: 0.45em 1.1em 0.45em 1.1em;
+  border-radius: 0 16px 16px 0;
+  box-shadow: 0 2px 8px rgba(201,164,58,0.14);
+  letter-spacing: 0.04em;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  border-left: 3px solid #ffe082;
+  z-index: 3;
+  animation: badge-pop 1.2s infinite alternate;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+.trending-tag-gold::before {
+  content: '★';
+  color: #c9a43a;
+  font-size: 1.1em;
+  margin-right: 0.5em;
+  filter: drop-shadow(0 1px 2px #fffbe7);
+}
+
+@media (max-width: 900px) {
+  .blog-post-thumb-fixed, .large-thumb {
+    width: 100px;
+    height: 100px;
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+  }
+  .trending-tag-gold {
+    font-size: 0.95em;
+    padding: 0.35em 0.8em 0.35em 0.8em;
+  }
+}
+
 .blog-post-content-fixed {
   flex: 1 1 auto;
   min-width: 0;

@@ -1,25 +1,42 @@
 <article class="blog-post card post-card-flex">
   <div class="post-card-inner">
-    <div class="blog-post-thumb-fixed">
+    <div class="blog-post-thumb-fixed large-thumb">
       <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">
         <img class="prespost" src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
       </a>
-      {% if post.trending is defined and post.trending %}
-      <span class="trending-badge" title="Trending Post">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="trending-anim">
-          <circle cx="16" cy="16" r="14" fill="#ffe082" stroke="#c9a43a" stroke-width="2"/>
-          <polygon points="16,7 19,21 16,18 13,21" fill="#c9a43a">
-            <animate attributeName="points" values="16,7 19,21 16,18 13,21;16,9 19,21 16,18 13,21;16,7 19,21 16,18 13,21" dur="1.3s" repeatCount="indefinite"/>
-          </polygon>
-          <text x="16" y="27" text-anchor="middle" font-size="9" fill="#c9a43a" font-weight="bold">★</text>
-        </svg>
-      </span>
-      {% endif %}
     </div>
     <div class="blog-post-content-fixed">
-      <div class="blog-post-title">
+      <div class="blog-post-title styled-title">
         <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">{{ post.title }}</a>
       </div>
+      <div class="blog-post-tag" style="margin-bottom:0.7em;">
+        <a href="category.html" style="color:var(--primary); font-weight:600;">{{ post.category }}</a>
+      </div>
+      {% if is_granted('ROLE_ADMIN') or (app.user and post.users and app.user.id == post.users.id) %}
+        <a href="{{ path('app_post_create_or_edit', {'id': post.id}) }}" class="btn btn-modifier-post"><i class="fa fa-edit"></i> Modifier</a>
+      {% endif %}
+      {% if app.user and post.users is not null and (app.user.id == post.users.id or is_granted('ROLE_ADMIN')) %}
+        <form method="post"
+          action="{{ path('app_post_delete', {'id': post.id}) }}"
+          style="display:inline"
+          onsubmit="return confirm('Voulez-vous vraiment supprimer ce post ?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+            <button class="btn btn-supprimer-post" type="submit"><i class="fa fa-trash"></i> Supprimer</button>
+        </form>
+      {% endif %}
+      <div class="blog-post-meta" style="margin:1em 0 0.6em 0;">
+        <ul style="display:flex; flex-direction:row; gap:2em; font-size:0.98em; color:#777;">
+          <li>Par <span style="color:var(--primary-dark); font-weight:600;">{% if post.users is not empty %}{{ post.users.username }}{% else %}unknown{% endif %}</span></li>
+          <li><i class="fa fa-clock-o"></i> {{ post.createdAt|date('F j, Y') }}</li>
+        </ul>
+      </div>
+      <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}" class="btn blog-post-action" style="margin-top:0.5em;">Lire plus <i class="fa fa-angle-right"></i></a>
+    </div>
+    {% if post.trending is defined and post.trending %}
+    <span class="trending-tag-gold">Trending Post</span>
+    {% endif %}
+  </div>
+</article>
         <div class="blog-post-tag" style="margin-bottom:0.7em;">
             <a href="category.html" style="color:var(--primary); font-weight:600;">{{ post.category }}</a>
         </div>
