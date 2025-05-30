@@ -59,13 +59,57 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: var(--border-radius);
+  border-radius: 0;
   margin: 0;
   padding: 0;
   display: block;
   box-sizing: border-box;
   overflow: hidden;
+  border: none;
+  box-shadow: none;
 }
+
+.btn-create-small {
+  font-size: 0.97em;
+  padding: 0.36em 1.1em;
+  border-radius: 10px;
+  font-weight: 500;
+  background: var(--primary-light);
+  color: var(--primary-dark) !important;
+  box-shadow: 0 2px 8px rgba(108,71,255,0.07);
+  border: none;
+  transition: background 0.18s, color 0.18s;
+}
+.btn-create-small:hover {
+  background: var(--primary);
+  color: #fff !important;
+}
+
+/* Style amélioré des textes sur la page d'accueil */
+.blog-section-title h2 {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  color: var(--primary-dark);
+  font-size: 2.1em;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 8px #ede7fe, 0 1px 1px #fff;
+  margin-bottom: 0.3em;
+}
+.blog-section-title p, .blog-section-title label, .category-filter label {
+  color: var(--primary-dark);
+  font-size: 1.08em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 3px #ede7fe;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.blog-post-content-fixed p, .blog-post-content-fixed span, .blog-post-content-fixed a {
+  color: var(--primary-dark);
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
 
 /* Centrage de tout le contenu sous l'image */
 .post-content-centered {
