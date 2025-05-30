@@ -3,22 +3,26 @@
 {% block title %}{{ is_editing ? 'Edit Post' : 'Create Post' }}{% endblock %}
 
 {% block content %}
-    <h1>{{ is_editing ? 'Edit Post' : 'Create a New Post' }}</h1>
-
-    {{ form_start(form, { 'attr': {'enctype': 'multipart/form-data'} }) }}
-        {{ form_widget(form) }}
-        <button type="submit">{{ is_editing ? 'Update Post' : 'Create Post' }}</button>
-    {{ form_end(form) }}
-
-    <a href="{{ path('app_home') }}">Back to Home</a>
-
+<div style="max-width: 520px; margin: 0 auto; padding: 2.2em 1.2em 1.2em 1.2em; background: #fff; border-radius: 14px; box-shadow: 0 2px 18px #ede7fe; font-family: 'Inter', 'Segoe UI', Arial, sans-serif;">
+    <h1 style="text-align:center; font-size:2.1em; font-weight:900; color:var(--primary-dark); letter-spacing:0.03em; margin-bottom:1.2em;">{{ is_editing ? 'Edit Post' : 'Créer un post' }}</h1>
+    <hr style="border: none; border-top: 2.5px solid var(--primary-light); margin-bottom: 1.3em;">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        {{ form_start(form, { 'attr': {'enctype': 'multipart/form-data', 'style': 'width:100%;'} }) }}
+            <div style="width:100%;">
+                {{ form_widget(form) }}
+            </div>
+            <button type="submit" class="btn-create-outline" style="margin:1.2em auto 0 auto; display:block;">{{ is_editing ? 'Update Post' : 'Créer le post' }}</button>
+        {{ form_end(form) }}
+        <a href="{{ path('app_home') }}" style="display:block; text-align:center; margin-top:1.7em; color:var(--primary); font-weight:600; letter-spacing:0.02em;">Retour à l'accueil</a>
+    </div>
     {% if form.vars.errors|length > 0 %}
-        <div class="alert alert-danger">
-            <ul>
+        <div class="alert alert-danger" style="margin-top:1.5em;">
+            <ul style="padding-left:1.2em;">
                 {% for error in form.vars.errors %}
                     <li>{{ error.message }}</li>
                 {% endfor %}
             </ul>
         </div>
     {% endif %}
+</div>
 {% endblock %}
