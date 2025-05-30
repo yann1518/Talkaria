@@ -34,8 +34,10 @@
         <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}" class="btn blog-post-action">Lire plus <i class="fa fa-angle-right"></i></a>
       </div>
     </div>
-    {% if post.trending is defined and post.trending %}
-    <span class="trending-tag-gold">Trending Post</span>
-    {% endif %}
+    <div style="width:100%; display:flex; justify-content:flex-end; align-items:center; min-height:1.6em; margin-top:0.2em;">
+      {% if post.trending is defined and post.trending %}
+        <span class="trending-tag-gold">Trending Post</span>
+      {% endif %}
+    </div>
   </div>
 </article>
