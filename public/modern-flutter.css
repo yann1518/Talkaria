@@ -144,42 +144,79 @@ a:hover {
 }
 
 /* Trending posts à droite */
-.trending-posts {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2em;
-}
-.trending-post {
-  background: var(--accent);
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  position: relative;
-  transition: box-shadow 0.2s, transform 0.2s;
-}
-.trending-post:hover {
-  box-shadow: 0 6px 24px rgba(108,71,255,0.18);
-  transform: translateY(-2px) scale(1.03);
-}
-.trending-post img.prespost {
-  border-radius: var(--border-radius);
-  width: 100%;
-  height: 90px;
-  object-fit: cover;
-  filter: brightness(0.85);
-}
-.trending-post .title-overlay {
+.trending-posts, .trending-post, .trending-post .title-overlay { display: none !important; }
+
+.trending-badge {
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.26);
-  font-size: 1.04em;
-  font-weight: 700;
-  background: rgba(60, 30, 124, 0.56);
-  padding: 0.5em 1em;
-  border-radius: 12px;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background: none;
+  padding: 0;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(201,164,58,0.12);
+  animation: badge-pop 1.2s infinite alternate;
 }
+.trending-badge svg {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+@keyframes badge-pop {
+  0% { transform: scale(1) rotate(-8deg); }
+  100% { transform: scale(1.13) rotate(8deg); }
+}
+
+/* Layout posts sans trending à droite */
+.col-12.col-md-8 {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-right: 0 !important;
+}
+
+/* Uniformiser les boutons */
+.btn, .btn-primary, .btn-supprimer-post, .btn-modifier-post, .blog-post-action {
+  background: var(--primary);
+  color: var(--accent) !important;
+  border: none;
+  border-radius: 12px;
+  padding: 0.6em 1.4em;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(108,71,255,0.10);
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+  cursor: pointer;
+  margin: 0.2em 0.2em;
+  text-decoration: none !important;
+  display: inline-block;
+  font-size: 1em;
+}
+.btn:hover, .btn-primary:hover, .btn-modifier-post:hover, .blog-post-action:hover {
+  background: var(--primary-dark);
+  color: #fff !important;
+  text-decoration: none !important;
+}
+.btn.btn-supprimer-post, .btn-supprimer-post {
+  background: #fff;
+  color: var(--danger) !important;
+  border: 2px solid var(--danger);
+  font-weight: 700;
+}
+.btn.btn-supprimer-post:hover, .btn-supprimer-post:hover, .btn.btn-supprimer-post:focus {
+  background: var(--danger);
+  color: #fff !important;
+  border: 2px solid var(--danger);
+  text-decoration: none !important;
+}
+
+/* Header nav clean */
+.navbar-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 1em;
+}
+.main-nav-social { display: none !important; }
+
 
 /* Header nav horizontal */
 .navbar-nav {
