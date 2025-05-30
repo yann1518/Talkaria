@@ -90,3 +90,11 @@ Options -Indexes
     Order allow,deny
     Deny from all
 </FilesMatch>
+
+# Autorise uniquement le téléchargement de l'APK via le lien de la page de téléchargement
+<FilesMatch "\.(apk)$">
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.1
+    # Ajoutez ici l'adresse IP de votre serveur si nécessaire
+</FilesMatch>
