@@ -1,12 +1,12 @@
 <article class="blog-post card post-card-flex">
   <div class="post-card-inner">
-    <div class="blog-post-thumb-fixed large-thumb">
+    <div class="blog-post-thumb-fixed extra-large-thumb">
       <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">
         <img class="prespost" src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
       </a>
     </div>
     <div class="blog-post-content-fixed">
-      <div class="blog-post-title styled-title">
+      <div class="blog-post-title styled-title centered-title">
         <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">{{ post.title }}</a>
       </div>
       <div class="blog-post-tag" style="margin-bottom:0.7em;">

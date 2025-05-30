@@ -47,6 +47,61 @@ body {
   align-items: center;
   justify-content: center;
 }
+.blog-post-thumb-fixed.extra-large-thumb {
+  width: 170px;
+  height: 170px;
+  min-width: 170px;
+  min-height: 170px;
+  max-width: 170px;
+  max-height: 170px;
+}
+.blog-post-thumb-fixed.extra-large-thumb img.prespost {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+/* Centrage horizontal du titre */
+.styled-title.centered-title {
+  text-align: center;
+  width: 100%;
+  margin: 0.4em 0 0.7em 0;
+  display: flex;
+  justify-content: center;
+}
+.styled-title.centered-title a {
+  width: 100%;
+  display: inline-block;
+}
+
+/* Header menu sans puces */
+.navbar-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2em;
+  width: 100%;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.navbar-nav .nav-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.navbar-nav .nav-item:not(:last-child)::after {
+  content: '|';
+  color: #bdbdbd;
+  margin-left: 1.2em;
+  margin-right: 0;
+}
+
 .blog-post-thumb-fixed img.prespost {
   width: 100%;
   height: 100%;
