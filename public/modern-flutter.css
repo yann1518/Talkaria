@@ -17,12 +17,101 @@ body {
   color: #222;
 }
 
-.card, .blog-post, .comment, .unique-post-header, .unique-post-content {
+.card, .blog-post, .card, .comment, .unique-post-header, .unique-post-content {
   background: var(--accent);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
   padding: 1.5rem 2rem;
   margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.post-card-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.3em;
+}
+.blog-post-thumb-fixed {
+  width: 90px;
+  height: 90px;
+  min-width: 90px;
+  min-height: 90px;
+  max-width: 90px;
+  max-height: 90px;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  position: relative;
+  background: #f7f7fa;
+  box-shadow: 0 2px 8px rgba(108,71,255,0.05);
+}
+.blog-post-thumb-fixed img.prespost {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+}
+.blog-post-content-fixed {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.footer-menu-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2em;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.footer-separator {
+  color: #bdbdbd;
+  font-size: 1.1em;
+  padding: 0 0.6em;
+  user-select: none;
+}
+
+.footer {
+  background: var(--primary);
+  color: var(--accent);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  box-shadow: 0 2px 8px rgba(108,71,255,0.10);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.footer .nav-link {
+  color: var(--accent) !important;
+  font-weight: 500;
+  margin-right: 1em;
+  text-decoration: none !important;
+  display: inline-block;
+}
+.footer .nav-link:not(:last-child)::after {
+  content: '|';
+  color: #bdbdbd;
+  margin-left: 1.2em;
+  margin-right: 0;
+}
+
+.navbar-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2em;
+  width: 100%;
+}
+.navbar-nav .nav-item:not(:last-child)::after {
+  content: '|';
+  color: #bdbdbd;
+  margin-left: 1.2em;
+  margin-right: 0;
+}
+
+/* Empêche débordement */
+.blog-post.card, .post-card-inner, .blog-post-content-fixed {
+  overflow: hidden;
 }
 
 h1, h2, h3, h4, h5 {

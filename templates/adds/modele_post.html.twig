@@ -1,24 +1,25 @@
 <article class="blog-post card post-card-flex">
-    <div class="blog-post-thumb">
-        <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">
-            <img class="prespost" src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
-        </a>
-        {% if post.trending is defined and post.trending %}
-        <span class="trending-badge" title="Trending Post">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="trending-anim">
-                <circle cx="16" cy="16" r="14" fill="#ffe082" stroke="#c9a43a" stroke-width="2"/>
-                <polygon points="16,7 19,21 16,18 13,21" fill="#c9a43a">
-                  <animate attributeName="points" values="16,7 19,21 16,18 13,21;16,9 19,21 16,18 13,21;16,7 19,21 16,18 13,21" dur="1.3s" repeatCount="indefinite"/>
-                </polygon>
-                <text x="16" y="27" text-anchor="middle" font-size="9" fill="#c9a43a" font-weight="bold">★</text>
-            </svg>
-        </span>
-        {% endif %}
+  <div class="post-card-inner">
+    <div class="blog-post-thumb-fixed">
+      <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">
+        <img class="prespost" src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
+      </a>
+      {% if post.trending is defined and post.trending %}
+      <span class="trending-badge" title="Trending Post">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="trending-anim">
+          <circle cx="16" cy="16" r="14" fill="#ffe082" stroke="#c9a43a" stroke-width="2"/>
+          <polygon points="16,7 19,21 16,18 13,21" fill="#c9a43a">
+            <animate attributeName="points" values="16,7 19,21 16,18 13,21;16,9 19,21 16,18 13,21;16,7 19,21 16,18 13,21" dur="1.3s" repeatCount="indefinite"/>
+          </polygon>
+          <text x="16" y="27" text-anchor="middle" font-size="9" fill="#c9a43a" font-weight="bold">★</text>
+        </svg>
+      </span>
+      {% endif %}
     </div>
-    <div class="blog-post-content">
-        <div class="blog-post-title">
-            <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">{{ post.title }}</a>
-        </div>
+    <div class="blog-post-content-fixed">
+      <div class="blog-post-title">
+        <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">{{ post.title }}</a>
+      </div>
         <div class="blog-post-tag" style="margin-bottom:0.7em;">
             <a href="category.html" style="color:var(--primary); font-weight:600;">{{ post.category }}</a>
         </div>
