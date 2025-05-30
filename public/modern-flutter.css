@@ -71,22 +71,25 @@ body {
 
 .btn-create-outline {
   display: inline-block;
-  padding: 0.36em 1.1em;
-  font-size: 1.02em;
-  font-weight: 600;
+  padding: 0.58em 2.2em;
+  font-size: 1.13em;
+  font-weight: 800;
   color: var(--primary-dark);
   background: #fff;
-  border: 1.5px solid var(--primary);
-  border-radius: 6px;
-  box-shadow: none;
+  border: 2.5px solid var(--primary);
+  border-radius: 7px;
+  box-shadow: 0 2px 14px 0 rgba(110, 81, 255, 0.13), 0 1.5px 3px #ede7fe;
   transition: all 0.15s;
   outline: none;
-  margin-bottom: 0.6em;
+  margin-bottom: 0.7em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .btn-create-outline:hover {
   background: var(--primary-light);
   color: var(--primary);
   border-color: var(--primary-dark);
+  box-shadow: 0 4px 18px 0 rgba(110, 81, 255, 0.20);
 }
 
 .btn-create-small {
