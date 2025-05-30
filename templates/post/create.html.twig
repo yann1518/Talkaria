@@ -9,20 +9,20 @@
     <div style="display: flex; flex-direction: row; align-items: flex-start; gap: 2.4em; justify-content: center; width: 100%; max-width: 100%;">
       <!-- Colonne instructions -->
       <div style="min-width: 160px; max-width: 210px; flex: 1; font-size: 1.08em; color: #7c6bb3; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; padding-right: 1.2em; text-align:right; line-height:1.7;">
-        <div style="border-right: 2.5px solid var(--primary-light); height: 100%; padding-right: 1.1em;">
-          <div style="margin-bottom:1.7em;">Titre du post<br><span style='font-size:0.93em; color:#b1a6d6;'>Ex: "Mon expérience Symfony"</span></div>
-          <div style="margin-bottom:1.7em;">Catégorie<br><span style='font-size:0.93em; color:#b1a6d6;'>Choisis la catégorie</span></div>
-          <div style="margin-bottom:1.7em;">Contenu<br><span style='font-size:0.93em; color:#b1a6d6;'>Rédige ton texte ici</span></div>
-          <div style="margin-bottom:1.7em;">Image<br><span style='font-size:0.93em; color:#b1a6d6;'>Ajoute une image (optionnel)</span></div>
+        <div style="border-right: 2.5px solid var(--primary-light); height: 100%; padding-right: 1.1em; display:flex; flex-direction:column; gap:2.7em; justify-content:center;">
+          <div style="margin-top:0.2em;">Titre</div>
+          <div>Catégorie</div>
+          <div>Contenu</div>
+          <div>Image</div>
         </div>
       </div>
       <!-- Colonne formulaire -->
       <div style="flex:2; min-width:0;">
         {{ form_start(form, { 'attr': {'enctype': 'multipart/form-data', 'style': 'width:100%;'} }) }}
-            <div style="width:100%; display:flex; flex-direction:column; gap:2.1em; align-items:center;">
+            <div style="width:100%; display:flex; flex-direction:column; gap:2.7em; align-items:flex-start; justify-content:center;">
                 {{ form_widget(form) }}
             </div>
-            <button type="submit" class="btn-create-outline" style="margin:2.1em auto 0 auto; display:block;">{{ is_editing ? 'Update Post' : 'Créer le post' }}</button>
+            <button type="submit" class="btn-create-outline" style="margin:2.7em auto 0 auto; display:block; align-self:center;">{{ is_editing ? 'Update Post' : 'Créer le post' }}</button>
         {{ form_end(form) }}
         <a href="{{ path('app_home') }}" style="display:block; text-align:center; margin-top:1.7em; color:var(--primary); font-weight:600; letter-spacing:0.02em;">Retour à l'accueil</a>
       </div>
