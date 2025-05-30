@@ -69,6 +69,26 @@ body {
   box-shadow: none;
 }
 
+.btn-create-outline {
+  display: inline-block;
+  padding: 0.36em 1.1em;
+  font-size: 1.02em;
+  font-weight: 600;
+  color: var(--primary-dark);
+  background: #fff;
+  border: 1.5px solid var(--primary);
+  border-radius: 6px;
+  box-shadow: none;
+  transition: all 0.15s;
+  outline: none;
+  margin-bottom: 0.6em;
+}
+.btn-create-outline:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary-dark);
+}
+
 .btn-create-small {
   font-size: 0.97em;
   padding: 0.36em 1.1em;
