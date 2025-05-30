@@ -6,13 +6,4 @@ api_platform:
                 type: header
 
     mapping:
-        resources:
-            'App\Entity\Users':
-                operations:
-                    get:
-                        method: 'GET'
-                        path: '/users/me'
-                        security: "is_granted('ROLE_USER')"
-                        security_message: 'Vous devez être connecté pour accéder à vos informations'
-                        normalization_context:
-                            groups: ['user:read']
+        paths: ['%kernel.project_dir%/src/Entity']
