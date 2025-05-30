@@ -39,27 +39,3 @@
     {% endif %}
   </div>
 </article>
-        <div class="blog-post-tag" style="margin-bottom:0.7em;">
-            <a href="category.html" style="color:var(--primary); font-weight:600;">{{ post.category }}</a>
-        </div>
-        {% if is_granted('ROLE_ADMIN') or (app.user and post.users and app.user.id == post.users.id) %}
-            <a href="{{ path('app_post_create_or_edit', {'id': post.id}) }}" class="btn btn-modifier-post"><i class="fa fa-edit"></i> Modifier</a>
-        {% endif %}
-        {% if app.user and post.users is not null and (app.user.id == post.users.id or is_granted('ROLE_ADMIN')) %}
-        <form method="post"
-          action="{{ path('app_post_delete', {'id': post.id}) }}"
-          style="display:inline"
-          onsubmit="return confirm('Voulez-vous vraiment supprimer ce post ?');">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
-            <button class="btn btn-supprimer-post" type="submit"><i class="fa fa-trash"></i> Supprimer</button>
-        </form>
-        {% endif %}
-        <div class="blog-post-meta" style="margin:1em 0 0.6em 0;">
-            <ul style="display:flex; flex-direction:row; gap:2em; font-size:0.98em; color:#777;">
-                <li>Par <span style="color:var(--primary-dark); font-weight:600;">{% if post.users is not empty %}{{ post.users.username }}{% else %}unknown{% endif %}</span></li>
-                <li><i class="fa fa-clock-o"></i> {{ post.createdAt|date('F j, Y') }}</li>
-            </ul>
-        </div>
-        <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}" class="btn blog-post-action" style="margin-top:0.5em;">Lire plus <i class="fa fa-angle-right"></i></a>
-    </div>
-</article>
