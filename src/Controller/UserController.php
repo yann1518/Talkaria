@@ -49,6 +49,7 @@ class UserController extends AbstractController
         }
 
         return $this->json([
+            'id' => $user->getId(),
             'email' => $user->getEmail(),
             'createdAt' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
             'roles' => $user->getRoles(),

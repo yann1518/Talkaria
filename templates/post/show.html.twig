@@ -3,44 +3,35 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-<section class="container post-background">
-    <div class="unique-post-header">
-        <h1>{{ post.title }}</h1>
-        <p>By 
-            {% if post.users is not empty %}
-                {{ post.users.username }}
-            {% else %}
-                Unknown
-            {% endif %}
-        </p>
-        <p><i class="fa fa-clock-o"></i> {{ post.createdAt|date('F j, Y') }}</p>
+<section class="container post-background" style="margin-top:2.5em;">
+    <div class="unique-post-header card" style="margin-bottom:2em;">
+        <h1 style="color:var(--primary-dark); font-weight:700;">{{ post.title }}</h1>
+        <p style="margin-bottom:0.3em;">Par <span style="color:var(--primary-dark); font-weight:600;">{% if post.users is not empty %}{{ post.users.username }}{% else %}Unknown{% endif %}</span></p>
+        <p style="color:#888;"><i class="fa fa-clock-o"></i> {{ post.createdAt|date('F j, Y') }}</p>
     </div>
-    
     {% if post.imageFilename %}
-        <div class="unique-post-image">
-            <img class="unique-post-img" src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
+        <div class="unique-post-image" style="margin-bottom:2em;">
+            <img class="unique-post-img" src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}" style="border-radius: var(--border-radius); width:100%; max-width:540px; object-fit:cover;">
         </div>
     {% endif %}
-
-    <div class="unique-post-content">
-        <p>{{ post.content|raw }}</p>
+    <div class="unique-post-content card" style="margin-bottom:2em;">
+        <p style="font-size:1.18em; color:#222;">{{ post.content|raw }}</p>
     </div>
 </section>
 
-<hr>
-<div class="comments-section">
-    <h3>Commentaires</h3>
+<div class="comments-section card" style="margin-bottom:2em;">
+    <h3 style="color:var(--primary-dark);">Commentaires</h3>
     {% for comment in comments %}
-        <div class="comment">
-            <strong>{{ comment.author }}</strong>
-            <span class="comment-date">{{ comment.createdAt|date('d/m/Y H:i') }}</span>
-            <p>{{ comment.content }}</p>
+        <div class="comment" style="background:#f3f0fa; border-radius:12px; padding:1em 1.5em; margin-bottom:1.2em; box-shadow:0 2px 8px rgba(108,71,255,0.07);">
+            <strong style="color:var(--primary-dark);">{{ comment.author }}</strong>
+            <span class="comment-date" style="color:#888; font-size:0.98em; margin-left:0.7em;">{{ comment.createdAt|date('d/m/Y H:i') }}</span>
+            <p style="margin:0.5em 0 0.2em 0;">{{ comment.content }}</p>
         </div>
     {% else %}
-        <p>Aucun commentaire pour ce post.</p>
+        <p style="color:#888;">Aucun commentaire pour ce post.</p>
     {% endfor %}
 
-    <h4>Ajouter un commentaire</h4>
+    <h4 style="color:var(--primary-dark); margin-top:2em;">Ajouter un commentaire</h4>
     {{ form_start(commentForm) }}
         {{ form_row(commentForm.content) }}
         <button type="submit" class="btn btn-primary">Envoyer</button>

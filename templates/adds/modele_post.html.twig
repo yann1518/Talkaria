@@ -1,21 +1,18 @@
-<article class="blog-post">
-    <div class="blog-post-thumb">
+<article class="blog-post card" style="display: flex; flex-direction: row; align-items: flex-start; background: var(--accent); border-radius: var(--border-radius); box-shadow: var(--shadow); margin-bottom: 2em;">
+    <div class="blog-post-thumb" style="flex:0 0 120px;">
         <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">
-            <img class="prespost" src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}">
+            <img class="prespost" src="{{ asset('uploads/imagesclient/' ~ post.imageFilename) }}" alt="{{ post.title }}" style="border-radius: var(--border-radius); width:120px; height:120px; object-fit:cover;">
         </a>
     </div>
-    <div class="blog-post-content" style="flex: 1; padding-left: 20px;">
-        <div class="blog-post-title">
-            <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}">{{ post.title }}</a>
+    <div class="blog-post-content" style="flex: 1; padding-left: 28px;">
+        <div class="blog-post-title" style="margin-bottom:0.2em;">
+            <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}" style="font-size:1.35em; font-weight:700; color:var(--primary-dark); text-decoration:none;">{{ post.title }}</a>
         </div>
-        <div class="blog-post-tag">
-            <a href="category.html">{{ post.category }}</a>
+        <div class="blog-post-tag" style="margin-bottom:0.7em;">
+            <a href="category.html" style="color:var(--primary); font-weight:600;">{{ post.category }}</a>
         </div>
         {% if is_granted('ROLE_ADMIN') or (app.user and post.users and app.user.id == post.users.id) %}
-            <a href="{{ path('app_post_create_or_edit', {'id': post.id}) }}"
-               class="btn-modifier-post">
-                <i class="fa fa-edit"></i> Modifier
-            </a>
+            <a href="{{ path('app_post_create_or_edit', {'id': post.id}) }}" class="btn btn-modifier-post"><i class="fa fa-edit"></i> Modifier</a>
         {% endif %}
         {% if app.user and post.users is not null and (app.user.id == post.users.id or is_granted('ROLE_ADMIN')) %}
         <form method="post"
@@ -23,26 +20,15 @@
           style="display:inline"
           onsubmit="return confirm('Voulez-vous vraiment supprimer ce post ?');">
             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
-            <button class="btn-supprimer-post" type="submit">
-                <i class="fa fa-trash"></i> Supprimer
-            </button>
+            <button class="btn btn-supprimer-post" type="submit"><i class="fa fa-trash"></i> Supprimer</button>
         </form>
         {% endif %}
-        <div class="blog-post-meta">
-            <ul>
-                <li>By <a href="about.html">
-                    {% if post.users is not empty %}
-                        {{ post.users.username }}
-                    {% else %}
-                        {{ 'unknown' }}
-                    {% endif %}
-                </a></li>
-                <li>
-                    <i class="fa fa-clock-o"></i>
-                    {{ post.createdAt|date('F j, Y') }} - 2 min
-                </li>
+        <div class="blog-post-meta" style="margin:1em 0 0.6em 0;">
+            <ul style="display:flex; flex-direction:row; gap:2em; font-size:0.98em; color:#777;">
+                <li>Par <span style="color:var(--primary-dark); font-weight:600;">{% if post.users is not empty %}{{ post.users.username }}{% else %}unknown{% endif %}</span></li>
+                <li><i class="fa fa-clock-o"></i> {{ post.createdAt|date('F j, Y') }}</li>
             </ul>
         </div>
-        <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}" class="blog-post-action">read more <i class="fa fa-angle-right"></i></a>
+        <a href="{{ path('app_post_show', {'id': post.id, 'slug': post.slug}) }}" class="btn blog-post-action" style="margin-top:0.5em;">Lire plus <i class="fa fa-angle-right"></i></a>
     </div>
 </article>

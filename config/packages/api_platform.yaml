@@ -4,3 +4,15 @@ api_platform:
             JWT:
                 name: Authorization
                 type: header
+
+    mapping:
+        resources:
+            'App\Entity\Users':
+                operations:
+                    get:
+                        method: 'GET'
+                        path: '/users/me'
+                        security: "is_granted('ROLE_USER')"
+                        security_message: 'Vous devez être connecté pour accéder à vos informations'
+                        normalization_context:
+                            groups: ['user:read']

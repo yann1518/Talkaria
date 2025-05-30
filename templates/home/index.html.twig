@@ -3,18 +3,18 @@
 {% block title %}Accueil{% endblock %}
 
 {% block content %}
-<section class="blog home-background">
+<section class="blog home-background" style="background: var(--primary-light); min-height: 100vh;">
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-8" style="padding-right: 50px;">
-                <div class="blog-section-title">
-                    <h2>POSTS</h2>
-                    <a class="nav-link" href="{{ path('app_post_create_or_edit') }}">Create Post</a>
-                    <p>ALL THE RECENTS POSTS ON TALKARIA</p>
-                    <div class="category-filter">
-                        <label for="categorySelect">Filter by category:</label>
-                        <select id="categorySelect" onchange="filterByCategory()">
-                            <option value="{{ path('app_home', {'page': current_page}) }}">All Categories</option>
+                <div class="blog-section-title" style="margin-bottom:2em;">
+                    <h2 style="color: var(--primary-dark); font-weight: 700;">POSTS</h2>
+                    <a class="btn" href="{{ path('app_post_create_or_edit') }}" style="margin-bottom:1em;">Créer un post</a>
+                    <p style="font-size:1.1em; color:#555;">Tous les posts récents sur Talkaria</p>
+                    <div class="category-filter" style="margin-bottom:1.5em;">
+                        <label for="categorySelect" style="margin-right:0.8em;">Filtrer par catégorie :</label>
+                        <select id="categorySelect" onchange="filterByCategory()" style="min-width:160px;">
+                            <option value="{{ path('app_home', {'page': current_page}) }}">Toutes les catégories</option>
                             {% for category in categories %}
                                 <option value="{{ category }}" {% if category == selectedCategory %}selected{% endif %}>{{ category }}</option>
                             {% endfor %}
