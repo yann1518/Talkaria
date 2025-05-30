@@ -42,16 +42,18 @@ class HomeController extends AbstractController
         }
 
         // Pagination
-        $totalPosts = count($posts); // Total des posts après filtrage
-        $totalPages = ceil($totalPosts / $limit);
-        $currentPage = (int) $request->query->get('page', 1); // Récupération de la page actuelle
-        $currentPage = max(1, min($currentPage, $totalPages)); // S'assurer que la page est valide
+        $limit = 3;
+        $currentPage = max(1, (int) $request->query->get('page', 1));
         $offset = ($currentPage - 1) * $limit;
 
-        // Récupérer les posts pour la page actuelle
-        $posts = array_slice($posts, $offset, $limit);
+        // Récupérer le nombre total de posts
+        $totalPosts = $postRepository->count([]);
+        $totalPages = (int) ceil($totalPosts / $limit);
 
-        // Passer l'URL de création de post au template
+        // Récupérer les posts pour la page courante
+        $posts = $postRepository->findBy([], ['createdAt' => 'DESC'], $limit, $offset);
+
+        // Passer les variables au template
         return $this->render('home/index.html.twig', [
             'posts' => $posts,
             'categories' => $categories,
