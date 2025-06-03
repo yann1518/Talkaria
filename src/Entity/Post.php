@@ -15,12 +15,16 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[ApiResource]
 class Post
 {
-    #[ORM\Column(type: 'integer')]
-    private int $likes = 0;
+    /**
+     * @var Collection<int, Like>
+     */
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'post', orphanRemoval: true, cascade: ["remove"])]
+    private Collection $likes;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->likes = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }
@@ -227,14 +231,36 @@ class Post
         return $this;
     }
 
-    public function getLikes(): int
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikes(): Collection
     {
         return $this->likes;
     }
 
-    public function setLikes(int $likes): self
+    public function getLikesCount(): int
     {
-        $this->likes = $likes;
+        return $this->likes->count();
+    }
+
+    public function addLike(Like $like): static
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setPost($this);
+        }
+        return $this;
+    }
+
+    public function removeLike(Like $like): static
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getPost() === $this) {
+                $like->setPost(null);
+            }
+        }
         return $this;
     }
 }
