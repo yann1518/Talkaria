@@ -261,19 +261,31 @@ class PostController extends AbstractController
         // Vérifie si un like existe déjà pour ce couple user/post
         $likeRepo = $entityManager->getRepository(\App\Entity\Like::class);
         $existingLike = $likeRepo->findOneBy(['user' => $user, 'post' => $post]);
+        
         if ($existingLike) {
-            // Déjà liké, retourne juste le nombre de likes actuel
-            return $this->json(['likes' => $post->getLikes(), 'alreadyLiked' => true]);
+            // Si déjà liké, on supprime le like et on décrémente le compteur
+            $entityManager->remove($existingLike);
+            $post->setLikes(max(0, $post->getLikes() - 1));
+            $entityManager->flush();
+            return $this->json([
+                'likes' => $post->getLikes(), 
+                'isLiked' => false,
+                'message' => 'Like supprimé avec succès'
+            ]);
+        } else {
+            // Sinon, on ajoute le like et on incrémente le compteur
+            $like = new \App\Entity\Like();
+            $like->setUser($user);
+            $like->setPost($post);
+            $entityManager->persist($like);
+            $post->setLikes($post->getLikes() + 1);
+            $entityManager->flush();
+            
+            return $this->json([
+                'likes' => $post->getLikes(), 
+                'isLiked' => true,
+                'message' => 'Like ajouté avec succès'
+            ]);
         }
-
-        // Sinon, crée un Like et incrémente le compteur
-        $like = new \App\Entity\Like();
-        $like->setUser($user);
-        $like->setPost($post);
-        $entityManager->persist($like);
-        $post->setLikes($post->getLikes() + 1);
-        $entityManager->flush();
-
-        return $this->json(['likes' => $post->getLikes(), 'alreadyLiked' => false]);
     }
 }

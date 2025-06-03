@@ -73,8 +73,14 @@
         window.location.href = url.toString();
     }
 
-    // Fonction Like AJAX + coeur animé
+    // Fonction Like/Unlike AJAX + coeur animé
     function likePost(postId) {
+        const heart = document.getElementById('heart-icon-' + postId);
+        const isCurrentlyLiked = heart.classList.contains('liked');
+        
+        // Animation immédiate pour un retour visuel rapide
+        heart.classList.add('heart-animation');
+        
         $.ajax({
             url: '/post/' + postId + '/like',
             type: 'POST',
@@ -83,28 +89,46 @@
             },
             success: function (data) {
                 if (data && typeof data.likes !== 'undefined') {
+                    // Met à jour le compteur de likes
                     $('#likes-count-' + postId).text(data.likes);
-                    // Animation coeur rempli
-                    let heart = document.getElementById('heart-icon-' + postId);
-                    if (heart) {
-                        heart.classList.add('heart-filled');
-                        setTimeout(function() {
-                            heart.classList.remove('heart-filled');
-                        }, 1200);
-                        // Remplit le coeur
+                    
+                    // Met à jour l'état du cœur en fonction de isLiked
+                    if (data.isLiked) {
+                        heart.classList.add('liked');
                         heart.querySelector('path').setAttribute('fill', '#e25555');
                         heart.querySelector('path').setAttribute('stroke', '#e25555');
-                        setTimeout(function() {
-                            heart.querySelector('path').setAttribute('fill', '#fff');
-                            heart.querySelector('path').setAttribute('stroke', 'var(--primary-dark)');
-                        }, 1200);
+                    } else {
+                        heart.classList.remove('liked');
+                        heart.querySelector('path').setAttribute('fill', '#fff');
+                        heart.querySelector('path').setAttribute('stroke', 'var(--primary-dark)');
+                    }
+                    
+                    // Supprime la classe d'animation après la fin
+                    setTimeout(() => {
+                        heart.classList.remove('heart-animation');
+                    }, 300);
+                    
+                    // Affiche un message de succès (optionnel)
+                    if (data.message) {
+                        console.log(data.message);
                     }
                 }
             },
             error: function (xhr) {
-                alert('Erreur lors du like.');
+                // Annule l'animation en cas d'erreur
+                heart.classList.remove('heart-animation');
+                
+                // Affiche un message d'erreur
+                const errorMessage = xhr.responseJSON && xhr.responseJSON.error 
+                    ? xhr.responseJSON.error 
+                    : 'Erreur lors de la mise à jour du like';
+                console.error(errorMessage);
+                
+                // Si l'utilisateur n'est pas connecté, redirige vers la page de connexion
+                if (xhr.status === 403) {
+                    window.location.href = '/login';
+                }
             }
-        });
     }
 </script>
 
