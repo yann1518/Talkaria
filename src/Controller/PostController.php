@@ -245,26 +245,19 @@ class PostController extends AbstractController
     #[Route('/post/{id}/like', name: 'app_post_like', methods: ['POST'])]
     public function like(int $id, EntityManagerInterface $entityManager, Request $request): Response
     {
-        // ... (code existant)
-    }
+        try {
+            // Vérification de la requête AJAX
+            if (!$request->isXmlHttpRequest()) {
+                return $this->json(['error' => 'Requête invalide'], 400);
+            }
 
-    #[Route('/post/{id}/like', name: 'app_post_like_status', methods: ['GET'])]
-    public function likeStatus(int $id, EntityManagerInterface $entityManager): Response
-    {
-        $user = $this->getUser();
-        $post = $entityManager->getRepository(Post::class)->find($id);
-        if (!$post) {
-            return $this->json(['error' => 'Post non trouvé'], 404);
-        }
-        $likeRepo = $entityManager->getRepository(\App\Entity\Like::class);
-        $likesCount = $likeRepo->countLikesForPost($post);
-        $isLiked = $user ? $likeRepo->isPostLikedByUser($post, $user) : false;
+            // Vérification de l'utilisateur connecté
+            $user = $this->getUser();
+            if (!$user) {
+                return $this->json(['error' => 'Vous devez être connecté pour liker.'], 403);
+            }
 
-        return $this->json([
-            'likes' => $likesCount,
-            'isLiked' => $isLiked,
-        ]);
-    }
+            // Récupération du post
             $post = $entityManager->getRepository(Post::class)->find($id);
             if (!$post) {
                 return $this->json(['error' => 'Post non trouvé'], 404);
