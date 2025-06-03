@@ -38,7 +38,18 @@
           Image
         </div>
         <div style="flex:2; min-width:0;">
-          {{ form_widget(form.imageFile, {'label': false}) }}
+          <div style="position:relative;">
+            {{ form_widget(form.imageFile, {
+              'label': false,
+              'attr': {
+                'style': 'display:none;',
+                'onchange': "document.getElementById('custom_imageFile_label').innerText = this.files[0]?.name || 'Cliquez pour choisir une image';"
+              }
+            }) }}
+            <label for="{{ form.imageFile.vars.id }}" id="custom_imageFile_label" style="display:block; cursor:pointer; background:var(--primary-light); color:var(--primary-dark); padding:1.1em 1.3em; border-radius:8px; border:2.5px dashed var(--primary); text-align:center; font-weight:600; transition:background 0.2s;">
+              Cliquez pour choisir une image
+            </label>
+          </div>
         </div>
       </div>
       <button type="submit" class="btn-create-outline" style="margin:2.7em auto 0 auto; display:block; align-self:center;">{{ is_editing ? 'Update Post' : 'Créer le post' }}</button>
