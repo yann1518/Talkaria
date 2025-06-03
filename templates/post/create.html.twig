@@ -10,13 +10,19 @@
       <!-- Colonne instructions -->
       <div style="min-width: 160px; max-width: 210px; flex: 1; font-size: 1.08em; color: #7c6bb3; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; padding-right: 1.2em; text-align:right; line-height:1.7;">
         <div style="border-right: 2.5px solid var(--primary-light); height: 100%; padding-right: 1.1em; display:flex; flex-direction:column; gap:2.7em; justify-content:center;">
-
-        </div>
+  <div style="margin-top:0.2em;">Titre</div>
+  <div>Catégorie</div>
+  <div>Contenu</div>
+  <div>Image</div>
+</div>
       </div>
       <!-- Colonne formulaire -->
       <div style="flex:2; min-width:0;">
         {{ form_start(form, { 'attr': {'enctype': 'multipart/form-data', 'style': 'width:100%;'} }) }}
-            {{ form_widget(form, {'label': false}) }}
+            {{ form_widget(form.title, {'label': false}) }}
+{{ form_widget(form.content, {'label': false}) }}
+{{ form_widget(form.category, {'label': false}) }}
+{{ form_widget(form.image, {'label': false}) }}
             <button type="submit" class="btn-create-outline" style="margin:2.7em auto 0 auto; display:block; align-self:center;">{{ is_editing ? 'Update Post' : 'Créer le post' }}</button>
         {{ form_end(form) }}
         <a href="{{ path('app_home') }}" style="display:block; text-align:center; margin-top:1.7em; color:var(--primary); font-weight:600; letter-spacing:0.02em;">Retour à l'accueil</a>
