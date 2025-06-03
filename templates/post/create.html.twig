@@ -52,6 +52,7 @@
           </div>
         </div>
       </div>
+      {{ form_widget(form._token) }}
       <button type="submit" class="btn-create-outline" style="margin:2.7em auto 0 auto; display:block; align-self:center;">{{ is_editing ? 'Update Post' : 'Créer le post' }}</button>
       {{ form_end(form, {'render_rest': false}) }}
       <a href="{{ path('app_home') }}" style="display:block; text-align:center; margin-top:1.7em; color:var(--primary); font-weight:600; letter-spacing:0.02em;">Retour à l'accueil</a>
