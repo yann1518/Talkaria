@@ -252,10 +252,22 @@ class PostController extends AbstractController
             return $this->json(['error' => 'Post not found'], 404);
         }
 
-        // Incrémente le compteur de likes
+        // Vérifie si un like existe déjà pour ce couple user/post
+        $likeRepo = $entityManager->getRepository(\App\Entity\Like::class);
+        $existingLike = $likeRepo->findOneBy(['user' => $user, 'post' => $post]);
+        if ($existingLike) {
+            // Déjà liké, retourne juste le nombre de likes actuel
+            return $this->json(['likes' => $post->getLikes(), 'alreadyLiked' => true]);
+        }
+
+        // Sinon, crée un Like et incrémente le compteur
+        $like = new \App\Entity\Like();
+        $like->setUser($user);
+        $like->setPost($post);
+        $entityManager->persist($like);
         $post->setLikes($post->getLikes() + 1);
         $entityManager->flush();
 
-        return $this->json(['likes' => $post->getLikes()]);
+        return $this->json(['likes' => $post->getLikes(), 'alreadyLiked' => false]);
     }
 }
