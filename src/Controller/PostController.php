@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Entity\Comments;
-use App\Entity\User;
+use App\Entity\Users;
 use App\Form\PostType;
 use App\Form\CommentsType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -264,7 +264,7 @@ class PostController extends AbstractController
             }
 
             $likeRepo = $entityManager->getRepository(\App\Entity\Like::class);
-            // Recherche du like existant (utiliser les objets, pas les IDs)
+            // Recherche du like existant (utiliser l'objet Users)
             $existingLike = $likeRepo->findOneBy([
                 'user' => $user,
                 'post' => $post
@@ -283,7 +283,7 @@ class PostController extends AbstractController
             } else {
                 // Création d'un nouveau like
                 $like = new \App\Entity\Like();
-                $like->setUser($user);
+                $like->setUser($user); // $user est bien un objet Users
                 $like->setPost($post);
                 $entityManager->persist($like);
                 $entityManager->flush();

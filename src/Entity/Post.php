@@ -16,10 +16,10 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class Post
 {
     /**
-     * @var Collection<int, Like>
+     * @var \Doctrine\Common\Collections\Collection<int, \App\Entity\Like>
      */
     #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'post', orphanRemoval: true, cascade: ["remove"])]
-    private Collection $likes;
+    private \Doctrine\Common\Collections\Collection $likes;
 
     public function __construct()
     {
