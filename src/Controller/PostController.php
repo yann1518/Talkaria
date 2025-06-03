@@ -265,10 +265,7 @@ class PostController extends AbstractController
             'isLiked' => $isLiked,
         ]);
     }
-        try {
-            // Vérification de la requête AJAX
-            if (!$request->isXmlHttpRequest()) {
-                return $this->json(['error' => 'Requête invalide'], 400);
+
             }
 
             // Vérification de l'utilisateur connecté
