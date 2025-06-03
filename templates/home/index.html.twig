@@ -57,6 +57,53 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+console.log('likePost chargé');
+function likePost(postId) {
+    console.log('clicked', postId);
+    const heart = document.getElementById('heart-icon-' + postId);
+    const likeCount = document.getElementById('likes-count-' + postId);
+    // Animation immédiate pour un retour visuel rapide
+    heart.classList.add('heart-animation');
+    $.ajax({
+        url: '/post/' + postId + '/like',
+        type: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        success: function (response) {
+            heart.classList.remove('heart-animation');
+            if (response.success === false) {
+                console.error('Erreur:', response.error);
+                return;
+            }
+            likeCount.textContent = response.likes;
+            if (response.isLiked) {
+                heart.classList.add('liked');
+                heart.querySelector('path').setAttribute('fill', '#e25555');
+                heart.querySelector('path').setAttribute('stroke', '#e25555');
+            } else {
+                heart.classList.remove('liked');
+                heart.querySelector('path').setAttribute('fill', '#fff');
+                heart.querySelector('path').setAttribute('stroke', 'var(--primary-dark)');
+            }
+        },
+        error: function (xhr) {
+            heart.classList.remove('heart-animation');
+            try {
+                const errorResponse = JSON.parse(xhr.responseText);
+                console.error('Erreur:', errorResponse.error || 'Erreur inconnue');
+                if (xhr.status === 403) {
+                    window.location.href = '/login';
+                }
+            } catch (e) {
+                console.error('Erreur lors du traitement de la réponse du serveur');
+            }
+        }
+    });
+}
+</script>
+
+<script>
     function filterByCategory() {
         var selectedCategory = document.getElementById("categorySelect").value;
         var url = new URL(window.location.href);
@@ -72,63 +119,6 @@
         url.searchParams.set('page', 1);
         window.location.href = url.toString();
     }
-
-    // Fonction Like/Unlike AJAX + coeur animé
-    console.log('likePost chargé');
-    function likePost(postId) {
-        console.log('clicked', postId);
-        const heart = document.getElementById('heart-icon-' + postId);
-        const likeCount = document.getElementById('likes-count-' + postId);
-        
-        // Animation immédiate pour un retour visuel rapide
-        heart.classList.add('heart-animation');
-        
-        $.ajax({
-            url: '/post/' + postId + '/like',
-            type: 'POST',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-            success: function (response) {
-                // Supprime la classe d'animation
-                heart.classList.remove('heart-animation');
-                
-                if (response.success === false) {
-                    console.error('Erreur:', response.error);
-                    return;
-                }
-                
-                // Met à jour le compteur de likes
-                likeCount.textContent = response.likes;
-                
-                // Met à jour l'état du cœur
-                if (response.isLiked) {
-                    heart.classList.add('liked');
-                    heart.querySelector('path').setAttribute('fill', '#e25555');
-                    heart.querySelector('path').setAttribute('stroke', '#e25555');
-                } else {
-                    heart.classList.remove('liked');
-                    heart.querySelector('path').setAttribute('fill', '#fff');
-                    heart.querySelector('path').setAttribute('stroke', 'var(--primary-dark)');
-                }
-                
-                // Affiche un message de succès
-                if (response.message) {
-                    console.log(response.message);
-                }
-            },
-            error: function (xhr) {
-                // Annule l'animation en cas d'erreur
-                heart.classList.remove('heart-animation');
-                
-                try {
-                    const errorResponse = JSON.parse(xhr.responseText);
-                    console.error('Erreur:', errorResponse.error || 'Erreur inconnue');
-                    
-                    // Si l'utilisateur n'est pas connecté, redirige vers la page de connexion
-                    if (xhr.status === 403) {
-                        window.location.href = '/login';
-                    }
                 } catch (e) {
                     console.error('Erreur lors du traitement de la réponse du serveur');
                 }
