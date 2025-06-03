@@ -18,6 +18,17 @@ class Post
     #[ORM\Column(type: 'integer')]
     private int $likes = 0;
 
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'post', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $likesCollection;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+        $this->likesCollection = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -60,12 +71,7 @@ class Post
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private ?string $slug = null;
 
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
-    }
+
 
     // Getters et Setters
 
@@ -228,6 +234,11 @@ class Post
     public function getLikes(): int
     {
         return $this->likes;
+    }
+
+    public function getLikesCollection(): Collection
+    {
+        return $this->likesCollection;
     }
 
     public function setLikes(int $likes): self

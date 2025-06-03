@@ -242,50 +242,67 @@ class PostController extends AbstractController
     #[Route('/post/{id}/like', name: 'app_post_like', methods: ['POST'])]
     public function like(int $id, EntityManagerInterface $entityManager, Request $request): Response
     {
-        // Ajax only
-        if (!$request->isXmlHttpRequest()) {
-            return $this->json(['error' => 'Invalid request'], 400);
-        }
+        try {
+            // Vérification de la requête AJAX
+            if (!$request->isXmlHttpRequest()) {
+                return $this->json(['error' => 'Requête invalide'], 400);
+            }
 
-        // Vérifie que l'utilisateur est connecté
-        $user = $this->getUser();
-        if (!$user) {
-            return $this->json(['error' => 'Vous devez être connecté pour liker.'], 403);
-        }
+            // Vérification de l'utilisateur connecté
+            $user = $this->getUser();
+            if (!$user) {
+                return $this->json(['error' => 'Vous devez être connecté pour liker.'], 403);
+            }
 
-        $post = $entityManager->getRepository(Post::class)->find($id);
-        if (!$post) {
-            return $this->json(['error' => 'Post not found'], 404);
-        }
+            // Récupération du post
+            $post = $entityManager->getRepository(Post::class)->find($id);
+            if (!$post) {
+                return $this->json(['error' => 'Post non trouvé'], 404);
+            }
 
-        // Vérifie si un like existe déjà pour ce couple user/post
-        $likeRepo = $entityManager->getRepository(\App\Entity\Like::class);
-        $existingLike = $likeRepo->findOneBy(['user' => $user, 'post' => $post]);
-        
-        if ($existingLike) {
-            // Si déjà liké, on supprime le like et on décrémente le compteur
-            $entityManager->remove($existingLike);
-            $post->setLikes(max(0, $post->getLikes() - 1));
-            $entityManager->flush();
-            return $this->json([
-                'likes' => $post->getLikes(), 
-                'isLiked' => false,
-                'message' => 'Like supprimé avec succès'
-            ]);
-        } else {
-            // Sinon, on ajoute le like et on incrémente le compteur
-            $like = new \App\Entity\Like();
-            $like->setUser($user);
-            $like->setPost($post);
-            $entityManager->persist($like);
-            $post->setLikes($post->getLikes() + 1);
-            $entityManager->flush();
+            $likeRepo = $entityManager->getRepository(\App\Entity\Like::class);
             
-            return $this->json([
-                'likes' => $post->getLikes(), 
-                'isLiked' => true,
-                'message' => 'Like ajouté avec succès'
+            // Vérification si l'utilisateur a déjà liké ce post
+            $existingLike = $likeRepo->findOneBy([
+                'user' => $user->getId(),
+                'post' => $post->getId()
             ]);
+
+            if ($existingLike) {
+                // Suppression du like existant
+                $entityManager->remove($existingLike);
+                $post->setLikes(max(0, $post->getLikes() - 1));
+                $entityManager->flush();
+                
+                return $this->json([
+                    'success' => true,
+                    'likes' => $post->getLikes(),
+                    'isLiked' => false,
+                    'message' => 'Like supprimé avec succès'
+                ]);
+            } else {
+                // Création d'un nouveau like
+                $like = new \App\Entity\Like();
+                $like->setUser($user);
+                $like->setPost($post);
+                
+                $entityManager->persist($like);
+                $post->setLikes($post->getLikes() + 1);
+                
+                $entityManager->flush();
+                
+                return $this->json([
+                    'success' => true,
+                    'likes' => $post->getLikes(),
+                    'isLiked' => true,
+                    'message' => 'Like ajouté avec succès'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return $this->json([
+                'success' => false,
+                'error' => 'Une erreur est survenue: ' . $e->getMessage()
+            ], 500);
         }
     }
 }
