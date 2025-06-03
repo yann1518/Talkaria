@@ -17,4 +17,14 @@ class LikeRepository extends ServiceEntityRepository
     }
 
     // Ajoute ici tes méthodes custom si besoin
+
+    public function countLikesForPost($post)
+    {
+        return $this->count(['post' => $post]);
+    }
+
+    public function isPostLikedByUser($post, $user)
+    {
+        return (bool) $this->findOneBy(['post' => $post, 'user' => $user]);
+    }
 }
