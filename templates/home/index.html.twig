@@ -65,12 +65,46 @@
         if (selectedCategory) {
             url.searchParams.set('category', selectedCategory);
         } else {
-            url.searchParams.delete('category'); // Supprime le paramètre si "All Categories" est sélectionné
+            url.searchParams.delete('category');
         }
 
         // Ajoute la pagination dans l'URL
-        url.searchParams.set('page', 1); // Réinitialise à la première page lors du changement de catégorie
-        window.location.href = url.toString(); // Redirige vers l'URL mise à jour
+        url.searchParams.set('page', 1);
+        window.location.href = url.toString();
+    }
+
+    // Fonction Like AJAX + coeur animé
+    function likePost(postId) {
+        $.ajax({
+            url: '/post/' + postId + '/like',
+            type: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            success: function (data) {
+                if (data && typeof data.likes !== 'undefined') {
+                    $('#likes-count-' + postId).text(data.likes);
+                    // Animation coeur rempli
+                    let heart = document.getElementById('heart-icon-' + postId);
+                    if (heart) {
+                        heart.classList.add('heart-filled');
+                        setTimeout(function() {
+                            heart.classList.remove('heart-filled');
+                        }, 1200);
+                        // Remplit le coeur
+                        heart.querySelector('path').setAttribute('fill', '#e25555');
+                        heart.querySelector('path').setAttribute('stroke', '#e25555');
+                        setTimeout(function() {
+                            heart.querySelector('path').setAttribute('fill', '#fff');
+                            heart.querySelector('path').setAttribute('stroke', 'var(--primary-dark)');
+                        }, 1200);
+                    }
+                }
+            },
+            error: function (xhr) {
+                alert('Erreur lors du like.');
+            }
+        });
     }
 </script>
 

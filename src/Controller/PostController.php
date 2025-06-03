@@ -238,4 +238,24 @@ class PostController extends AbstractController
 
         return $slug;
     }
+
+    #[Route('/post/{id}/like', name: 'app_post_like', methods: ['POST'])]
+    public function like(int $id, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        // Ajax only
+        if (!$request->isXmlHttpRequest()) {
+            return $this->json(['error' => 'Invalid request'], 400);
+        }
+
+        $post = $entityManager->getRepository(Post::class)->find($id);
+        if (!$post) {
+            return $this->json(['error' => 'Post not found'], 404);
+        }
+
+        // Incrémente le compteur de likes
+        $post->setLikes($post->getLikes() + 1);
+        $entityManager->flush();
+
+        return $this->json(['likes' => $post->getLikes()]);
+    }
 }
