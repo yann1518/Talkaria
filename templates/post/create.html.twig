@@ -6,10 +6,10 @@
 <div style="max-width: 520px; margin: 3.5em auto 0 auto; padding: 2.7em 1.2em 2.2em 1.2em; background: #fff; border-radius: 14px; box-shadow: 0 2px 18px #ede7fe; font-family: 'Inter', 'Segoe UI', Arial, sans-serif;">
     <h1 style="text-align:center; font-size:2.1em; font-weight:900; color:var(--primary-dark); letter-spacing:0.03em; margin-bottom:2em;">{{ is_editing ? 'Edit Post' : 'Créer un post' }}</h1>
     <hr style="border: none; border-top: 2.5px solid var(--primary-light); margin-bottom: 2.2em;">
-    <div style="display: flex; flex-direction: column; gap: 2.7em; width: 100%; max-width: 100%;">
+    <div style="display: flex; flex-direction: column; gap: 1.5em; width: 100%; max-width: 100%;">
       {% set instructions = ['Titre', 'Contenu', 'Catégorie', 'Image'] %}
       <div style="display: flex; flex-direction: row; align-items: center; gap: 2.4em;">
-        <div style="min-width: 160px; max-width: 210px; font-size: 1.08em; color: #7c6bb3; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; padding-right: 1.2em; text-align:right;">
+        <div style="min-width: 160px; max-width: 210px; font-size: 1.08em; color: #7c6bb3; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; padding-right: 1.2em; text-align:right; border-right: 2.5px solid var(--primary-light);">
           Titre
         </div>
         <div style="flex:2; min-width:0;">
@@ -18,7 +18,7 @@
         </div>
       </div>
       <div style="display: flex; flex-direction: row; align-items: center; gap: 2.4em;">
-        <div style="min-width: 160px; max-width: 210px; font-size: 1.08em; color: #7c6bb3; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; padding-right: 1.2em; text-align:right;">
+        <div style="min-width: 160px; max-width: 210px; font-size: 1.08em; color: #7c6bb3; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; padding-right: 1.2em; text-align:right; border-right: 2.5px solid var(--primary-light);">
           Contenu
         </div>
         <div style="flex:2; min-width:0;">
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div style="display: flex; flex-direction: row; align-items: center; gap: 2.4em;">
-        <div style="min-width: 160px; max-width: 210px; font-size: 1.08em; color: #7c6bb3; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; padding-right: 1.2em; text-align:right;">
+        <div style="min-width: 160px; max-width: 210px; font-size: 1.08em; color: #7c6bb3; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; padding-right: 1.2em; text-align:right; border-right: 2.5px solid var(--primary-light);">
           Catégorie
         </div>
         <div style="flex:2; min-width:0;">
@@ -34,7 +34,7 @@
         </div>
       </div>
       <div style="display: flex; flex-direction: row; align-items: center; gap: 2.4em;">
-        <div style="min-width: 160px; max-width: 210px; font-size: 1.08em; color: #7c6bb3; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; padding-right: 1.2em; text-align:right;">
+        <div style="min-width: 160px; max-width: 210px; font-size: 1.08em; color: #7c6bb3; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; padding-right: 1.2em; text-align:right; border-right: 2.5px solid var(--primary-light);">
           Image
         </div>
         <div style="flex:2; min-width:0;">
@@ -42,7 +42,7 @@
         </div>
       </div>
       <button type="submit" class="btn-create-outline" style="margin:2.7em auto 0 auto; display:block; align-self:center;">{{ is_editing ? 'Update Post' : 'Créer le post' }}</button>
-      {{ form_end(form) }}
+      {{ form_end(form, {'render_rest': false}) }}
       <a href="{{ path('app_home') }}" style="display:block; text-align:center; margin-top:1.7em; color:var(--primary); font-weight:600; letter-spacing:0.02em;">Retour à l'accueil</a>
     </div>
     <style>
