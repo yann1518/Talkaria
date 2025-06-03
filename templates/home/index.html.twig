@@ -57,6 +57,21 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+// Fonction de filtre catégorie (doit être définie avant le select)
+function filterByCategory() {
+    var selectedCategory = document.getElementById("categorySelect").value;
+    var url = new URL(window.location.href);
+    url.pathname = '/home'; // <-- force la redirection sur /home
+    // Met à jour le paramètre de la catégorie dans l'URL
+    if (selectedCategory) {
+        url.searchParams.set('category', selectedCategory);
+    } else {
+        url.searchParams.delete('category');
+    }
+    url.searchParams.set('page', 1); // reset pagination
+    window.location.href = url.toString();
+}
+
 console.log('likePost chargé');
 function likePost(postId) {
     console.log('clicked', postId);
