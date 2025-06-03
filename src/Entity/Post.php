@@ -15,6 +15,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[ApiResource]
 class Post
 {
+    #[ORM\Column(type: 'integer')]
+    private int $likes = 0;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -219,7 +222,17 @@ class Post
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+        return $this;
+    }
 
+    public function getLikes(): int
+    {
+        return $this->likes;
+    }
+
+    public function setLikes(int $likes): self
+    {
+        $this->likes = $likes;
         return $this;
     }
 }
