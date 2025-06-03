@@ -261,22 +261,19 @@ class PostController extends AbstractController
             }
 
             $likeRepo = $entityManager->getRepository(\App\Entity\Like::class);
-            
-            // Vérification si l'utilisateur a déjà liké ce post
+            // Recherche du like existant (utiliser les objets, pas les IDs)
             $existingLike = $likeRepo->findOneBy([
-                'user' => $user->getId(),
-                'post' => $post->getId()
+                'user' => $user,
+                'post' => $post
             ]);
 
             if ($existingLike) {
                 // Suppression du like existant
                 $entityManager->remove($existingLike);
-                $post->setLikes(max(0, $post->getLikes() - 1));
                 $entityManager->flush();
-                
                 return $this->json([
                     'success' => true,
-                    'likes' => $post->getLikes(),
+                    'likes' => $post->getLikesCount(),
                     'isLiked' => false,
                     'message' => 'Like supprimé avec succès'
                 ]);
@@ -285,15 +282,11 @@ class PostController extends AbstractController
                 $like = new \App\Entity\Like();
                 $like->setUser($user);
                 $like->setPost($post);
-                
                 $entityManager->persist($like);
-                $post->setLikes($post->getLikes() + 1);
-                
                 $entityManager->flush();
-                
                 return $this->json([
                     'success' => true,
-                    'likes' => $post->getLikes(),
+                    'likes' => $post->getLikesCount(),
                     'isLiked' => true,
                     'message' => 'Like ajouté avec succès'
                 ]);
