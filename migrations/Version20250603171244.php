@@ -19,8 +19,8 @@ final class Version20250603171244 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE post ADD likes INT DEFAULT NULL');
+        // Ajoute la colonne likes avec NOT NULL et DEFAULT 0 (robuste même si posts existants)
+        $this->addSql('ALTER TABLE post ADD likes INT NOT NULL DEFAULT 0');
     }
 
     public function down(Schema $schema): void
