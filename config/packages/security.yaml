@@ -28,6 +28,7 @@ security:
         main:
             pattern: ^/
             provider: app_user_provider
+            jwt: ~
             form_login:
                 login_path: app_login
                 check_path: app_login
