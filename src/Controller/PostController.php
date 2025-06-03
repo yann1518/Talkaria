@@ -247,6 +247,12 @@ class PostController extends AbstractController
             return $this->json(['error' => 'Invalid request'], 400);
         }
 
+        // Vérifie que l'utilisateur est connecté
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->json(['error' => 'Vous devez être connecté pour liker.'], 403);
+        }
+
         $post = $entityManager->getRepository(Post::class)->find($id);
         if (!$post) {
             return $this->json(['error' => 'Post not found'], 404);
