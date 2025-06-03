@@ -29,6 +29,7 @@ security:
             pattern: ^/
             provider: app_user_provider
             jwt: ~
+            entry_point: jwt
             form_login:
                 login_path: app_login
                 check_path: app_login
