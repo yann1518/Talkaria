@@ -24,12 +24,15 @@ class PostController extends AbstractController
     {
         $category = $request->query->get('category');
         $repo = $entityManager->getRepository(Post::class);
+        $qb = $repo->createQueryBuilder('p')
+            ->leftJoin('p.likes', 'l')
+            ->addSelect('l');
 
         if ($category) {
-            $posts = $repo->findBy(['category' => $category]);
-        } else {
-            $posts = $repo->findAll();
+            $qb->where('p.category = :cat')->setParameter('cat', $category);
         }
+
+        $posts = $qb->getQuery()->getResult();
 
         // Récupérer toutes les catégories distinctes pour le filtre
         $categories = $repo->createQueryBuilder('p')
