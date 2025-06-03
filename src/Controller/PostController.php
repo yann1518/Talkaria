@@ -20,13 +20,27 @@ class PostController extends AbstractController
 {
     #[IsGranted('ROLE_USER')]
     #[Route('/post', name: 'app_post')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Récupérer tous les posts
-        $posts = $entityManager->getRepository(Post::class)->findAll();
+        $category = $request->query->get('category');
+        $repo = $entityManager->getRepository(Post::class);
+
+        if ($category) {
+            $posts = $repo->findBy(['category' => $category]);
+        } else {
+            $posts = $repo->findAll();
+        }
+
+        // Récupérer toutes les catégories distinctes pour le filtre
+        $categories = $repo->createQueryBuilder('p')
+            ->select('DISTINCT p.category')
+            ->getQuery()
+            ->getResult();
 
         return $this->render('post/index.html.twig', [
             'posts' => $posts,
+            'categories' => array_column($categories, 'category'),
+            'selectedCategory' => $category,
         ]);
     }
 
