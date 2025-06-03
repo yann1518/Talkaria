@@ -242,6 +242,24 @@ class PostController extends AbstractController
         return $slug;
     }
 
+    #[Route('/post/{id}/like', name: 'app_post_like_status', methods: ['GET'])]
+    public function likeStatus(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $post = $entityManager->getRepository(Post::class)->find($id);
+        if (!$post) {
+            return $this->json(['error' => 'Post non trouvé'], 404);
+        }
+        $likeRepo = $entityManager->getRepository(\App\Entity\Like::class);
+        $likesCount = $likeRepo->count(['post' => $post]);
+        $isLiked = $user ? (bool)$likeRepo->findOneBy(['post' => $post, 'user' => $user]) : false;
+
+        return $this->json([
+            'likes' => $likesCount,
+            'isLiked' => $isLiked,
+        ]);
+    }
+
     #[Route('/post/{id}/like', name: 'app_post_like', methods: ['POST'])]
     public function like(int $id, EntityManagerInterface $entityManager, Request $request): Response
     {
