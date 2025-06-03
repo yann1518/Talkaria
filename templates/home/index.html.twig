@@ -107,16 +107,14 @@ function likePost(postId) {
     function filterByCategory() {
         var selectedCategory = document.getElementById("categorySelect").value;
         var url = new URL(window.location.href);
-
+        url.pathname = '/home'; // <-- force la redirection sur /home
         // Met à jour le paramètre de la catégorie dans l'URL
         if (selectedCategory) {
             url.searchParams.set('category', selectedCategory);
         } else {
             url.searchParams.delete('category');
         }
-
-        // Ajoute la pagination dans l'URL
-        url.searchParams.set('page', 1);
+        url.searchParams.set('page', 1); // reset pagination
         window.location.href = url.toString();
     }
                 } catch (e) {
