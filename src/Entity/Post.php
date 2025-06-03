@@ -44,7 +44,7 @@ class Post
     /**
      * @var Collection<int, Comments>
      */
-    #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'posts')]
+    #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'posts', orphanRemoval: true, cascade: ["remove"])]
     private Collection $comments;
 
     #[ORM\ManyToOne(inversedBy: 'author')]

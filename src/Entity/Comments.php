@@ -32,8 +32,8 @@ class Comments
     #[ORM\Column(length: 255)]
     private ?string $author = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comments')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Post $posts = null;
 
     /**
