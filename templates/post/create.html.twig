@@ -19,9 +19,7 @@
       <!-- Colonne formulaire -->
       <div style="flex:2; min-width:0;">
         {{ form_start(form, { 'attr': {'enctype': 'multipart/form-data', 'style': 'width:100%;'} }) }}
-            <div style="width:100%; display:flex; flex-direction:column; gap:2.7em; align-items:flex-start; justify-content:center;">
-                {{ form_widget(form) }}
-            </div>
+            {{ form_widget(form) }}
             <button type="submit" class="btn-create-outline" style="margin:2.7em auto 0 auto; display:block; align-self:center;">{{ is_editing ? 'Update Post' : 'Créer le post' }}</button>
         {{ form_end(form) }}
         <a href="{{ path('app_home') }}" style="display:block; text-align:center; margin-top:1.7em; color:var(--primary); font-weight:600; letter-spacing:0.02em;">Retour à l'accueil</a>
