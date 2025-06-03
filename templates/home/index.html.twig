@@ -16,11 +16,11 @@
                     <div class="category-filter" style="margin-bottom:1.5em;">
                         <label for="categorySelect" style="margin-right:0.8em;">Filtrer par catégorie :</label>
                         <select id="categorySelect" onchange="filterByCategory()" style="min-width:160px;">
-                            <option value="{{ path('app_home', {'page': current_page}) }}">Toutes les catégories</option>
-                            {% for category in categories %}
-                                <option value="{{ category }}" {% if category == selectedCategory %}selected{% endif %}>{{ category }}</option>
-                            {% endfor %}
-                        </select>
+    <option value="" {% if not selectedCategory %}selected{% endif %}>Toutes les catégories</option>
+    {% for category in categories %}
+        <option value="{{ category }}" {% if category == selectedCategory %}selected{% endif %}>{{ category }}</option>
+    {% endfor %}
+</select>
                     </div>
                 </div>
                 <div class="blog-posts" id="blogPosts">
