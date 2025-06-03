@@ -265,16 +265,6 @@ class PostController extends AbstractController
             'isLiked' => $isLiked,
         ]);
     }
-
-            }
-
-            // Vérification de l'utilisateur connecté
-            $user = $this->getUser();
-            if (!$user) {
-                return $this->json(['error' => 'Vous devez être connecté pour liker.'], 403);
-            }
-
-            // Récupération du post
             $post = $entityManager->getRepository(Post::class)->find($id);
             if (!$post) {
                 return $this->json(['error' => 'Post non trouvé'], 404);
