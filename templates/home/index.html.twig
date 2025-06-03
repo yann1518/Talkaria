@@ -74,7 +74,9 @@
     }
 
     // Fonction Like/Unlike AJAX + coeur animé
+    console.log('likePost chargé');
     function likePost(postId) {
+        console.log('clicked', postId);
         const heart = document.getElementById('heart-icon-' + postId);
         const likeCount = document.getElementById('likes-count-' + postId);
         

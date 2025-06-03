@@ -274,9 +274,10 @@ class PostController extends AbstractController
                 // Suppression du like existant
                 $entityManager->remove($existingLike);
                 $entityManager->flush();
+                $likesCount = $likeRepo->count(['post' => $post]);
                 return $this->json([
                     'success' => true,
-                    'likes' => $post->getLikesCount(),
+                    'likes' => $likesCount,
                     'isLiked' => false,
                     'message' => 'Like supprimé avec succès'
                 ]);
@@ -287,9 +288,10 @@ class PostController extends AbstractController
                 $like->setPost($post);
                 $entityManager->persist($like);
                 $entityManager->flush();
+                $likesCount = $likeRepo->count(['post' => $post]);
                 return $this->json([
                     'success' => true,
-                    'likes' => $post->getLikesCount(),
+                    'likes' => $likesCount,
                     'isLiked' => true,
                     'message' => 'Like ajouté avec succès'
                 ]);
