@@ -16,5 +16,15 @@ class LikeRepository extends ServiceEntityRepository
         parent::__construct($registry, Like::class);
     }
 
-    // Ajoute ici tes méthodes custom si besoin
+    // Compte le nombre de likes pour un post donné
+    public function countLikesForPost($post)
+    {
+        return $this->count(['post' => $post]);
+    }
+
+    // Vérifie si un utilisateur a liké un post donné
+    public function isPostLikedByUser($post, $user)
+    {
+        return (bool) $this->findOneBy(['post' => $post, 'user' => $user]);
+    }
 }
