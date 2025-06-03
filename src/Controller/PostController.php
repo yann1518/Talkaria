@@ -137,6 +137,36 @@ class PostController extends AbstractController
         ]);
     }
     
+    #[Route('/comment/delete/{id}', name: 'app_comment_delete', methods: ['POST'])]
+    public function deleteComment(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $comment = $entityManager->getRepository(Comments::class)->find($id);
+        $user = $this->getUser();
+
+        if (!$comment) {
+            throw $this->createNotFoundException('Commentaire non trouvé.');
+        }
+
+        // Vérification du token CSRF
+        $submittedToken = $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('delete_comment' . $comment->getId(), $submittedToken)) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
+
+        // Vérifie les droits : auteur ou admin
+        if ($user && ($this->isGranted('ROLE_ADMIN') || $comment->getAuthor() === $user->getUsername())) {
+            $entityManager->remove($comment);
+            $entityManager->flush();
+            $this->addFlash('success', 'Commentaire supprimé.');
+        } else {
+            $this->addFlash('danger', 'Vous ne pouvez pas supprimer ce commentaire.');
+        }
+
+        // Redirige vers la page du post
+        $post = $comment->getPosts();
+        return $this->redirectToRoute('app_post_show', ['id' => $post->getId(), 'slug' => $post->getSlug()]);
+    }
+
     #[Route('/post/show/{id}/{slug}', name: 'app_post_show')]
     public function show(int $id, string $slug, EntityManagerInterface $entityManager, Request $request): Response
     {

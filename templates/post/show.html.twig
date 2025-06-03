@@ -26,6 +26,12 @@
             <strong style="color:var(--primary-dark);">{{ comment.author }}</strong>
             <span class="comment-date" style="color:#888; font-size:0.98em; margin-left:0.7em;">{{ comment.createdAt|date('d/m/Y H:i') }}</span>
             <p style="margin:0.5em 0 0.2em 0;">{{ comment.content }}</p>
+            {% if app.user and (is_granted('ROLE_ADMIN') or comment.author == app.user.username) %}
+                <form method="post" action="{{ path('app_comment_delete', {'id': comment.id}) }}" style="display:inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_comment' ~ comment.id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer ce commentaire ?');">Supprimer</button>
+                </form>
+            {% endif %}
         </div>
     {% else %}
         <p style="color:#888;">Aucun commentaire pour ce post.</p>
