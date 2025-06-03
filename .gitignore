@@ -30,5 +30,6 @@
 ###< lexik/jwt-authentication-bundle ###
 
 ###< logo ###
-/public/logo
+/public/logo/*
+!/public/logo/.gitkeep
 ###< logo ###
